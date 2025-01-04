@@ -25,6 +25,8 @@ COPY src/start.sh .
 
 RUN groupadd -g ${GID} bitwarden; \
 useradd bitwarden -u ${UID} -g bitwarden; \
+mkdir -p /data; \
+chown -R bitwarden:bitwarden /data; \
 mkdir -p "/home/bitwarden/.config/Bitwarden CLI"; \
 touch "/home/bitwarden/.config/Bitwarden CLI/data.json"; \
 chown -R bitwarden:bitwarden /home/bitwarden; \
@@ -33,4 +35,4 @@ chmod +x /app/start.sh
 
 USER bitwarden
 
-CMD /app/start.sh
+CMD [ "/app/start.sh" ]

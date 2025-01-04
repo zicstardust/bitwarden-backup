@@ -25,13 +25,19 @@ if [[ -z "$ENCRYPTION_KEY" ]]; then
    exit 1
 fi
 
-/app/bw config server $BW_SERVER
+status=$(/app/bw status)
+
+if ! [ $(echo $status | grep $BW_SERVER) ]; then
+   /app/bw config server $BW_SERVER
+fi
 
 #login
-BW_CLIENTID=${CLIENT_ID} \
-BW_CLIENTSECRET=${CLIENT_SECRET} \
-/app/bw login --apikey
-
+userID=$(echo $CLIENT_ID | sed 's/^user.//')
+if ! [ $(echo $status | grep $userID) ]; then
+   BW_CLIENTID=${CLIENT_ID} \
+   BW_CLIENTSECRET=${CLIENT_SECRET} \
+   /app/bw login --apikey
+fi
 #get session
 BW_SESSION=$(/app/bw unlock --raw $MASTER_PASSWORD)
 
@@ -44,9 +50,9 @@ export --format encrypted_json \
 chown bitwarden:bitwarden /data/bitwarden-backup-$DATE.json
 
 #logout
-/app/bw logout
-echo "" > "/home/bitwarden/.config/Bitwarden CLI/data.json"
-#unset BW_SESSION
+#/app/bw logout
+#echo "" > "/home/bitwarden/.config/Bitwarden CLI/data.json"
+
 echo ""
 echo "next execution in $INTERVAL"
 sleep $INTERVAL

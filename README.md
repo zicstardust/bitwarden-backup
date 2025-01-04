@@ -4,7 +4,7 @@
 services:
   bitwarden-backup:
     container_name: bitwarden-backup
-    image: zicstardust/bitwarden-backup
+    image: zicstardust/bitwarden-backup:latest
     environment:
       TZ: America/New_York
       UID: 1000

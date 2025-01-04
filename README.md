@@ -3,6 +3,7 @@
 ```
 services:
   bitwarden-backup:
+    restart: unless-stopped 
     container_name: bitwarden-backup
     image: zicstardust/bitwarden-backup:latest
     environment:
@@ -15,7 +16,6 @@ services:
       CLIENT_SECRET: ${CLIENT_SECRET}
       MASTER_PASSWORD: ${MASTER_PASSWORD}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
-      
     volumes:
       - /path/to/data/:/data/
 ```

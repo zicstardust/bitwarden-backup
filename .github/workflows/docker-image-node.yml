@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  PLATAFORM_ARCH: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
+  PLATAFORM_ARCH: linux/amd64,linux/arm64/v8
   CONTAINER_REPO: ${{ vars.DOCKERHUB_USERNAME }}/bitwarden-backup
   
 jobs:

@@ -1,9 +1,17 @@
-FROM alpine:3.21.0
+FROM debian:12 AS builder
+
+WORKDIR /src
+
+RUN apt update -y; \
+    apt install wget unzip -y
+
+RUN wget https://vault.bitwarden.com/download/?app=cli\&platform=linux -O bitwarden-cli.zip; \
+    unzip bitwarden-cli.zip
+    
+FROM debian:12.8-slim
 
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2024.12.0"
-
-ENV NODE_OPTIONS="$NODE_OPTIONS --no-deprecation"
 
 ENV UID=1000
 ENV GID=1000
@@ -12,13 +20,11 @@ ENV INTERVAL='24h'
 
 WORKDIR /app
 
+COPY --from=builder /src/bw /usr/local/bin/bw
 COPY src/start.sh .
 
-RUN apk update; \
-    apk add npm bash; \
-    npm install -g @bitwarden/cli; \
-    addgroup bitwarden -g ${GID}; \
-    adduser bitwarden -u ${UID} -D -G bitwarden; \
+RUN groupadd -g ${GID} bitwarden; \
+    useradd bitwarden -u ${UID} -g bitwarden; \
     mkdir -p /data; \
     chown -R bitwarden:bitwarden /data; \
     mkdir -p "/home/bitwarden/.config/Bitwarden CLI"; \

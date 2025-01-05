@@ -2,7 +2,7 @@ services:
   bitwarden-backup:
     container_name: bitwarden-backup
     build: .
-    #env_file: .env
+    env_file: .env
     environment:
       TZ: America/Manaus
       UID: ${UID:-1000}

@@ -8,6 +8,7 @@ on:
 
 env:
   PLATAFORM_ARCH: linux/amd64
+  CONTAINER_REPO: ${{ vars.DOCKERHUB_USERNAME }}/bitwarden-backup
   
 jobs:
   build:
@@ -42,4 +43,4 @@ jobs:
           context: .
           platforms: ${{ env.PLATAFORM_ARCH }}
           push: true
-          tags: zicstardust/bitwarden-backup:latest
+          tags: ${{ env.CONTAINER_REPO }}:latest

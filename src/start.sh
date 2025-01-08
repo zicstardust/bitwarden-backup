@@ -29,7 +29,7 @@ fi
 status=$(/usr/local/bin/bw status)
 
 if ! [ $(echo $status | grep $BW_SERVER) ]; then
-   /usr/local/bin/bw config server $BW_SERVER
+   /usr/local/bin/bw config server $BW_SERVER 1> /dev/null
 fi
 
 #login
@@ -37,7 +37,7 @@ userID=$(echo $CLIENT_ID | sed 's/^user.//')
 if ! [ $(echo $status | grep $userID) ]; then
    BW_CLIENTID=${CLIENT_ID} \
    BW_CLIENTSECRET=${CLIENT_SECRET} \
-   /usr/local/bin/bw login --apikey
+   /usr/local/bin/bw login --apikey 1> /dev/null
 fi
 #get session
 BW_SESSION=$(/usr/local/bin/bw unlock --raw $MASTER_PASSWORD)

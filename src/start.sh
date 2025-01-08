@@ -50,8 +50,9 @@ if ! [[ -z "$ORGANIZATION_ID" ]]; then
    export --organizationid $ORGANIZATION_ID --format encrypted_json \
    --password $ENCRYPTION_KEY \
    > /data/$FILENAME_ORG
+
+   chown bitwarden:bitwarden /data/$FILENAME_ORG
 fi
-chown bitwarden:bitwarden /data/$FILENAME_ORG
 
 
 #backup
@@ -64,7 +65,7 @@ else
    --password $ENCRYPTION_KEY \
    > /data/$FILENAME
 
-chown bitwarden:bitwarden /data/$FILENAME
+   chown bitwarden:bitwarden /data/$FILENAME
 fi
 
 #logout

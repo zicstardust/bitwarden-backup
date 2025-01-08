@@ -10,7 +10,7 @@ services:
       TZ: America/New_York
       UID: 1000
       GID: 1000
-      INTERVAL: 86400
+      INTERVAL: 1d
       BW_SERVER: ${BW_SERVER}
       BW_CLIENTID: ${BW_CLIENTID}
       BW_CLIENTSECRET: ${BW_CLIENTSECRET}

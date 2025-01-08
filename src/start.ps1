@@ -13,6 +13,40 @@ function Remove-OldBackups {
     
 }
 
+function Interval {
+    param (
+        [Parameter(Mandatory)]
+        [string]$Timer
+    )
+    [char]$lastChar = $Timer[-1]
+    [Int32]$time = $Timer.Substring(0, $Timer.Length - 1)
+
+    if((-not($time -match "^\d+$")) -Or (-not($lastChar -match "[s|m|h|d|w]"))){
+        Write-Error "invalid INTERVAL"
+        exit 1
+    }
+
+    if ($lastChar -Eq "s") {
+        return $time
+    }
+
+    if ($lastChar -Eq "m") {
+        return $time*60
+    }
+
+    if ($lastChar -Eq "h") {
+        return $time*3600
+    }
+
+    if ($lastChar -Eq "d") {
+        return $time*86400
+    }
+
+    if ($lastChar -Eq "w") {
+        return $time*604800
+    }
+}
+
 function Backup {
     $DATE=(Get-Date -Format "yyyy.MM.dd-HH:mm:ss")
     $FILENAME="${DATE}_bitwarden-backup.json"
@@ -79,8 +113,8 @@ function Main {
     while ($true) {
         Backup
         Remove-OldBackups
-        Write-Output "next execution in $env:INTERVAL seconds"
-        Start-Sleep -Seconds $env:INTERVAL
+        Write-Output "next execution in $env:INTERVAL"
+        Start-Sleep -Seconds $(Interval -Timer $env:INTERVAL)
     }
     
 }

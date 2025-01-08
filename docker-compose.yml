@@ -7,7 +7,7 @@ services:
       TZ: ${TZ:-America/New_York}
       UID: ${UID:-1000}
       GID: ${GID:-1000}
-      INTERVAL: ${INTERVAL:-24h}
+      INTERVAL: ${INTERVAL:-86400}
       BACKUP_ORGANIZATION_ONLY: ${BACKUP_ORGANIZATION_ONLY:-"False"}
     volumes:
       - ./data/:/data/

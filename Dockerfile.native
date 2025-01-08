@@ -2,12 +2,15 @@ FROM debian:12.8 AS builder
 
 WORKDIR /src
 
-RUN apt update -y; \
-    apt install wget unzip -y
+ENV DEBIAN_VERSION="12"
+ENV POWERSHELL_VERSION="7.4.6"
 
-RUN wget https://vault.bitwarden.com/download/?app=cli\&platform=linux -O bitwarden-cli.zip; \
-    unzip bitwarden-cli.zip
-    
+RUN apt update -y; \
+    apt install wget unzip -y; \
+    wget https://vault.bitwarden.com/download/?app=cli\&platform=linux -O bitwarden-cli.zip; \
+    unzip bitwarden-cli.zip; \
+    wget https://github.com/PowerShell/PowerShell/releases/download/v${POWERSHELL_VERSION}/powershell_${POWERSHELL_VERSION}-1.deb_amd64.deb -O powershell.deb;
+
 FROM debian:12.8-slim
 
 LABEL NAME="Bitwarden CLI"
@@ -16,14 +19,19 @@ LABEL VERSION="2024.12.0"
 ENV UID=1000
 ENV GID=1000
 ENV BW_SERVER="vault.bitwarden.com"
-ENV INTERVAL='24h'
+ENV INTERVAL='86400'
 
 WORKDIR /app
 
 COPY --from=builder /src/bw /usr/local/bin/bw
-COPY src/start.sh .
+COPY --from=builder /src/powershell.deb /app/powershell.deb
+COPY src/start.ps1 .
 
-RUN groupadd -g ${GID} bitwarden; \
+RUN dpkg -i /app/powershell.deb; \
+    apt update; \
+    apt -y install -f; \
+    rm -f /app/powershell.deb;\
+    groupadd -g ${GID} bitwarden; \
     useradd bitwarden -u ${UID} -g bitwarden; \
     mkdir -p /data; \
     chown -R bitwarden:bitwarden /data; \
@@ -31,8 +39,8 @@ RUN groupadd -g ${GID} bitwarden; \
     touch "/home/bitwarden/.config/Bitwarden CLI/data.json"; \
     chown -R bitwarden:bitwarden /home/bitwarden; \
     chown -R bitwarden:bitwarden /app; \
-    chmod +x /app/start.sh
+    chmod +x /app/start.ps1
 
 USER bitwarden
 
-CMD [ "/app/start.sh" ]
+CMD [ "pwsh", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "/app/start.ps1" ]

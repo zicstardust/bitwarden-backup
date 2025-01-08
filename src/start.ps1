@@ -1,3 +1,17 @@
+function Remove-OldBackups {
+    $files_list = $(Get-ChildItem -Path "/data/").name
+
+    if ($files_list.Length -ge $env:KEEP_LAST) {
+        
+        for ($i = 0; $i -lt $($files_list.Length - $env:KEEP_LAST); $i++) {
+           Remove-Item -LiteralPath "/data/$($files_list[$i])" -Force -Confirm:$false -Verbose
+        }
+
+    } else {
+        Write-Output "Number of backups less than KEEP_LAST"
+    }
+    
+}
 
 function Backup {
     $DATE=(Get-Date -Format "yyyy.MM.dd-HH:mm:ss")
@@ -39,8 +53,6 @@ function Backup {
 
     }
 
-    Write-Output "next execution in $env:INTERVAL seconds"
-    Start-Sleep -Seconds $env:INTERVAL
 }
 
 function Main {
@@ -66,6 +78,9 @@ function Main {
 
     while ($true) {
         Backup
+        Remove-OldBackups
+        Write-Output "next execution in $env:INTERVAL seconds"
+        Start-Sleep -Seconds $env:INTERVAL
     }
     
 }

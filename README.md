@@ -18,6 +18,7 @@ services:
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
       #ORGANIZATION_ID: #Optional
       #BACKUP_ORGANIZATION_ONLY: "False" #Optional
+      #KEEP_LAST: 7
     volumes:
       - /path/to/data/:/data/
 ```

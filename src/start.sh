@@ -1,6 +1,7 @@
 #!/bin/bash
-#config server
 DATE=$(date "+%Y%m%d-%H%M%S")
+FILENAME="${DATE}_bitwarden-backup.json"
+FILENAME_ORG="${DATE}_ORG_${ORGANIZATION_ID}.json"
 
 if [[ -z "$CLIENT_ID" ]]; then
    echo "CLIENT_ID not set"
@@ -41,13 +42,30 @@ fi
 #get session
 BW_SESSION=$(/usr/local/bin/bw unlock --raw $MASTER_PASSWORD)
 
-#backup
-/usr/local/bin/bw --raw --session $BW_SESSION \
-export --format encrypted_json \
---password $ENCRYPTION_KEY \
-> /data/bitwarden-backup-$DATE.json
+#backup organization
+if ! [[ -z "$ORGANIZATION_ID" ]]; then
+   echo ""
+   echo "Backup organization vault..."
+   /usr/local/bin/bw --raw --session $BW_SESSION \
+   export --organizationid $ORGANIZATION_ID --format encrypted_json \
+   --password $ENCRYPTION_KEY \
+   > /data/$FILENAME_ORG
+fi
+chown bitwarden:bitwarden /data/$FILENAME_ORG
 
-chown bitwarden:bitwarden /data/bitwarden-backup-$DATE.json
+
+#backup
+if [[ "$BACKUP_ORGANIZATION_ONLY" == "True" ]]; then
+   echo "BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup"
+else
+   echo "Backup individual vault..."
+   /usr/local/bin/bw --raw --session $BW_SESSION \
+   export --format encrypted_json \
+   --password $ENCRYPTION_KEY \
+   > /data/$FILENAME
+
+chown bitwarden:bitwarden /data/$FILENAME
+fi
 
 #logout
 #/usr/local/bin/bw logout

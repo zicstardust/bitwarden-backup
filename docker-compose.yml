@@ -8,11 +8,6 @@ services:
       UID: ${UID:-1000}
       GID: ${GID:-1000}
       INTERVAL: ${INTERVAL:-24h}
-      BW_SERVER: ${BW_SERVER}
-      CLIENT_ID: ${CLIENT_ID}
-      CLIENT_SECRET: ${CLIENT_SECRET}
-      MASTER_PASSWORD: ${MASTER_PASSWORD}
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
-      
+      BACKUP_ORGANIZATION_ONLY: ${BACKUP_ORGANIZATION_ONLY:-False}
     volumes:
       - ./data/:/data/

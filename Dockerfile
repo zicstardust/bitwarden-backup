@@ -3,7 +3,8 @@ FROM alpine:3.21.1
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2024.12.0"
 
-ENV NODE_OPTIONS="$NODE_OPTIONS --no-deprecation"
+#ENV NODE_OPTIONS="$NODE_OPTIONS --no-deprecation"
+ENV NODE_OPTIONS="--no-deprecation"
 
 ENV UID=1000
 ENV GID=1000

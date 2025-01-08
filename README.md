@@ -17,7 +17,7 @@ services:
       MASTER_PASSWORD: ${MASTER_PASSWORD}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
       #ORGANIZATION_ID: #Optional
-      #BACKUP_ORGANIZATION_ONLY: #Optional
+      #BACKUP_ORGANIZATION_ONLY: "False" #Optional
     volumes:
       - /path/to/data/:/data/
 ```

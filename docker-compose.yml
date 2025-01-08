@@ -4,7 +4,7 @@ services:
     build: .
     env_file: .env
     environment:
-      TZ: America/Manaus
+      TZ: ${TZ:-America/New_York}
       UID: ${UID:-1000}
       GID: ${GID:-1000}
       INTERVAL: ${INTERVAL:-24h}

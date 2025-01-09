@@ -1,35 +1,21 @@
-function Remove-OldBackups {
-
-    if ($env:KEEP_LAST -eq 0){
-        return
-    }
-
-    $files_list = $(Get-ChildItem -Path "/data/").name
-
-    if ($files_list.Length -ge $env:KEEP_LAST) {
-        
-        for ($i = 0; $i -lt $($files_list.Length - $env:KEEP_LAST); $i++) {
-           Remove-Item -LiteralPath "/data/$($files_list[$i])" -Force -Confirm:$false -Verbose
-        }
-
-    } else {
-        Write-Output "Number of backups less than KEEP_LAST"
-    }
-    
-}
-
 function Interval {
     param (
         [Parameter(Mandatory)]
-        [string]$Timer
+        [string]$Interval,
+        [Parameter(Mandatory=$false)]
+        [Switch]$CheckError
     )
-    [char]$lastChar = $Timer[-1]
-    [Int32]$time = $Timer.Substring(0, $Timer.Length - 1)
 
-    if((-not($time -match "^\d+$")) -Or (-not($lastChar -match "[s|m|h|d|w]"))){
-        Write-Error "invalid INTERVAL"
-        exit 1
+    if ($CheckError){
+        if((-not($Interval.Substring(0, $Interval.Length - 1) -match "^\d+$")) -Or (-not($Interval[-1] -match "[s|m|h|d|w]"))){
+            return $true
+        } else {
+            return $false
+        }
     }
+
+    [char]$lastChar = $Interval[-1]
+    [Int64]$time = $Interval.Substring(0, $Interval.Length - 1)
 
     if ($lastChar -Eq "s") {
         return $time
@@ -50,6 +36,59 @@ function Interval {
     if ($lastChar -Eq "w") {
         return $time*604800
     }
+}
+
+function CheckVariables {
+    if (-not ($env:BW_CLIENTID)){
+        Write-Error "BW_CLIENTID not set"
+        exit 1
+    }
+    
+    if (-not ($env:BW_CLIENTSECRET)){
+        Write-Error "BW_CLIENTSECRET not set"
+        exit 1
+    }
+    
+    if (-not ($env:MASTER_PASSWORD)){
+        Write-Error "MASTER_PASSWORD not set"
+        exit 1
+    }
+    
+    if (-not ($env:ENCRYPTION_KEY)){
+        Write-Error "ENCRYPTION_KEY not set"
+        exit 1
+    }
+
+    if(-not($env:KEEP_LAST -match "^\d+$")){
+        Write-Error "invalid KEEP_LAST"
+        exit 1
+    }
+    
+    if($(Interval -Interval $env:INTERVAL -CheckError) -eq $true){
+        Write-Error "invalid INTERVAL"
+        exit 1
+    }
+   
+}
+
+function Remove-OldBackups {
+
+    if ($env:KEEP_LAST -eq 0){
+        return
+    }
+
+    $files_list = $(Get-ChildItem -Path "/data/").name
+
+    if ($files_list.Length -ge $env:KEEP_LAST) {
+        
+        for ($i = 0; $i -lt $($files_list.Length - $env:KEEP_LAST); $i++) {
+           Remove-Item -LiteralPath "/data/$($files_list[$i])" -Force -Confirm:$false -Verbose
+        }
+
+    } else {
+        Write-Output "Number of backups less than KEEP_LAST"
+    }
+    
 }
 
 function Backup {
@@ -99,31 +138,13 @@ function Backup {
 }
 
 function Main {
-    if (-not ($env:BW_CLIENTID)){
-        Write-Output "BW_CLIENTID not set"
-        exit 1
-    }
-    
-    if (-not ($env:BW_CLIENTSECRET)){
-        Write-Output "BW_CLIENTSECRET not set"
-        exit 1
-    }
-    
-    if (-not ($env:MASTER_PASSWORD)){
-        Write-Output "MASTER_PASSWORD not set"
-        exit 1
-    }
-    
-    if (-not ($env:ENCRYPTION_KEY)){
-        Write-Output "ENCRYPTION_KEY not set"
-        exit 1
-    }
 
     while ($true) {
+        CheckVariables
         Backup
         Remove-OldBackups
         Write-Output "next execution in $env:INTERVAL"
-        Start-Sleep -Seconds $(Interval -Timer $env:INTERVAL)
+        Start-Sleep -Seconds $(Interval -Interval $env:INTERVAL)
     }
     
 }

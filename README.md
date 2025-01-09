@@ -73,5 +73,5 @@ docker run -d \
 | `MASTER_PASSWORD` | Set User Master Password ||
 | `ENCRYPTION_KEY` | Set password for file encryption ||
 | `ORGANIZATION_IDS` | Backup organization vault<br/><br/>array separated by `,` ||
-| `BACKUP_ORGANIZATION_ONLY` | Skip individual vault backup ||
+| `BACKUP_ORGANIZATION_ONLY` | Skip individual vault backup | False |
 | `KEEP_LAST` | Number of backups to keep<br/><br/>If value is 0, keep all | 0 |

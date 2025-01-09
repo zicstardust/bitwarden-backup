@@ -72,12 +72,16 @@ function CheckVariables {
 }
 
 function Remove-OldBackups {
+    param (
+        [Parameter(Mandatory)]
+        [string]$Include
+    )
 
     if ($env:KEEP_LAST -eq 0){
         return
     }
 
-    $files_list = $(Get-ChildItem -Path "/data/").name
+    $files_list = $(Get-ChildItem -Path "/data/" -Name -Include "*$Include*")
 
     if ($files_list.Length -ge $env:KEEP_LAST) {
         
@@ -92,7 +96,7 @@ function Remove-OldBackups {
 }
 
 function Backup {
-    $DATE=(Get-Date -Format "yyyy.MM.dd-HH:mm:ss")    
+    $DATE=(Get-Date -Format "yyyy.MM.dd-HH:mm:ss")
 
     $status=$(/usr/local/bin/bw status)
 
@@ -118,6 +122,7 @@ function Backup {
     export --format encrypted_json `
     --password $env:ENCRYPTION_KEY | `
     Out-File -FilePath "/data/$FILENAME"
+    Remove-OldBackups -Include "bitwarden-backup"
     }
 
     #backup organizations
@@ -133,6 +138,7 @@ function Backup {
             export --organizationid $ORGANIZATION --format encrypted_json `
             --password $env:ENCRYPTION_KEY | `
             Out-File -FilePath "/data/$FILENAME_ORG"
+            Remove-OldBackups -Include "ORG_${ORGANIZATION}"
         }
     }
 }
@@ -142,7 +148,6 @@ function Main {
     while ($true) {
         CheckVariables
         Backup
-        Remove-OldBackups
         Write-Output "next execution in $env:INTERVAL"
         Start-Sleep -Seconds $(Interval -Interval $env:INTERVAL)
     }

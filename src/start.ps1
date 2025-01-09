@@ -119,10 +119,10 @@ function Backup {
         $FILENAME="${DATE}_bitwarden-backup.json"
         Write-Output "Backup individual vault..."
         /usr/local/bin/bw --raw --session $BW_SESSION `
-    export --format encrypted_json `
-    --password $env:ENCRYPTION_KEY | `
-    Out-File -FilePath "/data/$FILENAME"
-    Remove-OldBackups -Include "bitwarden-backup"
+                            export --format encrypted_json `
+                            --password $env:ENCRYPTION_KEY | `
+                            Out-File -FilePath "/data/$FILENAME"
+        Remove-OldBackups -Include "bitwarden-backup"
     }
 
     #backup organizations
@@ -135,9 +135,9 @@ function Backup {
             $FILENAME_ORG="${DATE}_ORG_${ORGANIZATION}.json"
 
             /usr/local/bin/bw --raw --session $BW_SESSION `
-            export --organizationid $ORGANIZATION --format encrypted_json `
-            --password $env:ENCRYPTION_KEY | `
-            Out-File -FilePath "/data/$FILENAME_ORG"
+                                export --organizationid $ORGANIZATION --format encrypted_json `
+                                --password $env:ENCRYPTION_KEY | `
+                                Out-File -FilePath "/data/$FILENAME_ORG"
             Remove-OldBackups -Include "ORG_${ORGANIZATION}"
         }
     }

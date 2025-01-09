@@ -81,7 +81,7 @@ function Remove-OldBackups {
         return
     }
 
-    $files_list = $(Get-ChildItem -Path "/data/" -Name -Include "*$Include*")
+    [Array]$files_list = $(Get-ChildItem -Path "/data/" -Name -Include "*$Include*")
 
     if ($files_list.Length -ge $env:KEEP_LAST) {
         

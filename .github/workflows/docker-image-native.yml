@@ -1,10 +1,16 @@
-name: Docker Image CI
+name: Push image tag native to docker hub
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'Dockerfile.native'
+      - 'src/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'Dockerfile.native'
+      - 'src/**'
 
 env:
   PLATAFORM_ARCH: linux/amd64

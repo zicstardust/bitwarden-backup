@@ -1,4 +1,9 @@
 function Remove-OldBackups {
+
+    if ($env:KEEP_LAST -eq 0){
+        return
+    }
+
     $files_list = $(Get-ChildItem -Path "/data/").name
 
     if ($files_list.Length -ge $env:KEEP_LAST) {

@@ -17,8 +17,8 @@
 
 | Tag | Available | Description |
 | :----: | :----: |--- |
-| latest, node | ✅ | Bitwarden CLI Node version |
-| native | ✅ | Bitwarden CLI binary native |
+| [`latest`, `node`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile) | ✅ | Bitwarden CLI Node version |
+| [`native`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile.native) | ✅ | Bitwarden CLI binary native |
 
 ## Usage
 ### docker-compose

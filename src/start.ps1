@@ -53,9 +53,7 @@ function Interval {
 }
 
 function Backup {
-    $DATE=(Get-Date -Format "yyyy.MM.dd-HH:mm:ss")
-    $FILENAME="${DATE}_bitwarden-backup.json"
-    $FILENAME_ORG="${DATE}_ORG_${env:ORGANIZATION_ID}.json"
+    $DATE=(Get-Date -Format "yyyy.MM.dd-HH:mm:ss")    
 
     $status=$(/usr/local/bin/bw status)
 
@@ -75,6 +73,7 @@ function Backup {
     if ($env:BACKUP_ORGANIZATION_ONLY -eq "True"){
         Write-Output "BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup"
     } else {
+        $FILENAME="${DATE}_bitwarden-backup.json"
         Write-Output "Backup individual vault..."
         /usr/local/bin/bw --raw --session $BW_SESSION `
     export --format encrypted_json `
@@ -82,16 +81,21 @@ function Backup {
     Out-File -FilePath "/data/$FILENAME"
     }
 
-    #backup organization
-    if ($env:ORGANIZATION_ID) {
+    #backup organizations
+    if ($env:ORGANIZATION_IDS) {
+        $ORGANIZATIONS=$env:ORGANIZATION_IDS.Split(',')
+
         Write-Output "Backup organization vault..."
-        /usr/local/bin/bw --raw --session $BW_SESSION `
-        export --organizationid $env:ORGANIZATION_ID --format encrypted_json `
-        --password $env:ENCRYPTION_KEY | `
-        Out-File -FilePath "/data/$FILENAME_ORG"
 
+        foreach ($ORGANIZATION in $ORGANIZATIONS) {
+            $FILENAME_ORG="${DATE}_ORG_${ORGANIZATION}.json"
+
+            /usr/local/bin/bw --raw --session $BW_SESSION `
+            export --organizationid $ORGANIZATION --format encrypted_json `
+            --password $env:ENCRYPTION_KEY | `
+            Out-File -FilePath "/data/$FILENAME_ORG"
+        }
     }
-
 }
 
 function Main {

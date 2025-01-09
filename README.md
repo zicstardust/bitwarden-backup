@@ -84,7 +84,7 @@ Set `SELF_HOSTED` to `True` and set `BW_SERVER_BASE`
 | `BW_SERVER_WEB_VAULT` | Custom web vault URL that differs from the `BW_SERVER_BASE` | |
 | `BW_SERVER_API` | Custom API URL that differs from the `BW_SERVER_BASE` | |
 | `BW_SERVER_IDENTITY` | Custom identity URL that differs from the `BW_SERVER_BASE` | |
-| `BW_ICONS` | Custom icons service URL that differs from the `BW_SERVER_BASE` | |
+| `BW_SERVER_ICONS` | Custom icons service URL that differs from the `BW_SERVER_BASE` | |
 | `BW_SERVER_NOTIFICATIONS` | Custom notifications URL that differs from the `BW_SERVER_BASE` | |
 | `BW_SERVER_EVENTS` | Custom events URL that differs from the `BW_SERVER_BASE` | |
 | `BW_SERVER_KEY_CONNECTOR` | URL for your Key Connector server | |

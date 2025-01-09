@@ -111,8 +111,8 @@ function Set-URLServer {
         $BW_SERVER = $BW_SERVER + "--identity $env:BW_SERVER_IDENTITY "
     }
 
-    if ($env:BW_ICONS){
-        $BW_SERVER = $BW_SERVER + "--icons $env:BW_ICONS "
+    if ($env:BW_SERVER_ICONS){
+        $BW_SERVER = $BW_SERVER + "--icons $env:BW_SERVER_ICONS "
     }
 
     if ($env:BW_SERVER_NOTIFICATIONS){

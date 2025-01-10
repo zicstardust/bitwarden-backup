@@ -103,34 +103,34 @@ function Remove-OldBackups {
 
 function Set-URLServer {
 
-    $BW_SERVER="$env:BW_SERVER_BASE "
+    $BW_SERVER="$env:BW_SERVER_BASE"
 
     if ($env:BW_SERVER_WEB_VAULT){
-        $BW_SERVER = $BW_SERVER + "--web-vault $env:BW_SERVER_WEB_VAULT "
+        $BW_SERVER = $BW_SERVER + " --web-vault $env:BW_SERVER_WEB_VAULT"
     }
 
     if ($env:BW_SERVER_API){
-        $BW_SERVER = $BW_SERVER + "--api $env:BW_SERVER_API "
+        $BW_SERVER = $BW_SERVER + " --api $env:BW_SERVER_API"
     }
 
     if ($env:BW_SERVER_IDENTITY){
-        $BW_SERVER = $BW_SERVER + "--identity $env:BW_SERVER_IDENTITY "
+        $BW_SERVER = $BW_SERVER + " --identity $env:BW_SERVER_IDENTITY"
     }
 
     if ($env:BW_SERVER_ICONS){
-        $BW_SERVER = $BW_SERVER + "--icons $env:BW_SERVER_ICONS "
+        $BW_SERVER = $BW_SERVER + " --icons $env:BW_SERVER_ICONS"
     }
 
     if ($env:BW_SERVER_NOTIFICATIONS){
-        $BW_SERVER = $BW_SERVER + "--notifications $env:BW_SERVER_NOTIFICATIONS "
+        $BW_SERVER = $BW_SERVER + " --notifications $env:BW_SERVER_NOTIFICATIONS"
     }
 
     if ($env:BW_SERVER_EVENTS){
-        $BW_SERVER = $BW_SERVER + "--events $env:BW_SERVER_EVENTS "
+        $BW_SERVER = $BW_SERVER + " --events $env:BW_SERVER_EVENTS"
     }
 
     if ($env:BW_SERVER_KEY_CONNECTOR){
-        $BW_SERVER = $BW_SERVER + "--key-connector $env:BW_SERVER_KEY_CONNECTOR "
+        $BW_SERVER = $BW_SERVER + " --key-connector $env:BW_SERVER_KEY_CONNECTOR"
     }
 
     /usr/local/bin/bw config server $BW_SERVER | Out-Null

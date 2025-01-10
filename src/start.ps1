@@ -59,12 +59,6 @@ function CheckVariables {
         exit 1
     }
 
-    if (($env:SELF_HOSTED -eq "True") -And (-not ($env:BW_SERVER_BASE))){
-        Write-Error "SELF_HOSTED is True"
-        Write-Error "BW_SERVER_BASE not set"
-        exit 1
-    }
-
     if(-not($env:KEEP_LAST -match "^\d+$")){
         Write-Error "invalid KEEP_LAST"
         exit 1
@@ -141,7 +135,7 @@ function Backup {
 
     $status=$(/usr/local/bin/bw status)
 
-    if ($env:SELF_HOSTED -eq "True"){
+    if ($env:BW_SERVER_BASE){
         Set-URLServer
     }
 

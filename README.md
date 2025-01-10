@@ -73,18 +73,15 @@ docker run -d \
 | `BACKUP_ORGANIZATION_ONLY` | Skip individual vault backup | False |
 | `KEEP_LAST` | Number of backups to keep<br/><br/>If value is 0, keep all | 0 |
 
-### For Self-hosted
-Set `SELF_HOSTED` to `True` and set `BW_SERVER_BASE`
+### For Self-hosted only
 
-
-| variables | Function | Default |
+| variables | Function | Required |
 | :----: | --- | --- |
-| `SELF_HOSTED` | Set self-host | False |
-| `BW_SERVER_BASE` | On-premises hosted installation URL | |
-| `BW_SERVER_WEB_VAULT` | Custom web vault URL that differs from the `BW_SERVER_BASE` | |
-| `BW_SERVER_API` | Custom API URL that differs from the `BW_SERVER_BASE` | |
-| `BW_SERVER_IDENTITY` | Custom identity URL that differs from the `BW_SERVER_BASE` | |
-| `BW_SERVER_ICONS` | Custom icons service URL that differs from the `BW_SERVER_BASE` | |
-| `BW_SERVER_NOTIFICATIONS` | Custom notifications URL that differs from the `BW_SERVER_BASE` | |
-| `BW_SERVER_EVENTS` | Custom events URL that differs from the `BW_SERVER_BASE` | |
-| `BW_SERVER_KEY_CONNECTOR` | URL for your Key Connector server | |
+| `BW_SERVER_BASE` | On-premises hosted installation URL | Required |
+| `BW_SERVER_WEB_VAULT` | Custom web vault URL that differs from the `BW_SERVER_BASE` | Optional |
+| `BW_SERVER_API` | Custom API URL that differs from the `BW_SERVER_BASE` | Optional |
+| `BW_SERVER_IDENTITY` | Custom identity URL that differs from the `BW_SERVER_BASE`  Optional| |
+| `BW_SERVER_ICONS` | Custom icons service URL that differs from the `BW_SERVER_BASE` | Optional |
+| `BW_SERVER_NOTIFICATIONS` | Custom notifications URL that differs from the `BW_SERVER_BASE` | Optional |
+| `BW_SERVER_EVENTS` | Custom events URL that differs from the `BW_SERVER_BASE` | Optional |
+| `BW_SERVER_KEY_CONNECTOR` | URL for your Key Connector server | Optional |

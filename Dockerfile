@@ -1,4 +1,4 @@
-FROM alpine:3.21.1
+FROM alpine:3.21.2
 
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2024.12.0"

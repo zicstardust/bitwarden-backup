@@ -13,7 +13,7 @@ RUN apt update -y; \
 FROM debian:12.8-slim
 
 LABEL NAME="Bitwarden CLI"
-LABEL VERSION="2024.12.0"
+LABEL VERSION="2025.1.0"
 
 ENV UID=1000
 ENV GID=1000

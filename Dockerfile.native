@@ -1,4 +1,4 @@
-FROM debian:12.8 AS builder
+FROM debian:12.9 AS builder
 
 WORKDIR /src
 
@@ -10,7 +10,7 @@ RUN apt update -y; \
     unzip bitwarden-cli.zip; \
     wget https://github.com/PowerShell/PowerShell/releases/download/v${POWERSHELL_VERSION}/powershell_${POWERSHELL_VERSION}-1.deb_amd64.deb -O powershell.deb
 
-FROM debian:12.8-slim
+FROM debian:12.9-slim
 
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2025.1.0"

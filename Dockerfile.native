@@ -2,13 +2,14 @@ FROM debian:12.9 AS builder
 
 WORKDIR /src
 
-ENV POWERSHELL_VERSION="7.4.6"
+COPY src/download_powershell.sh .
 
 RUN apt update -y; \
     apt install wget unzip -y; \
     wget https://vault.bitwarden.com/download/?app=cli\&platform=linux -O bitwarden-cli.zip; \
     unzip bitwarden-cli.zip; \
-    wget https://github.com/PowerShell/PowerShell/releases/download/v${POWERSHELL_VERSION}/powershell_${POWERSHELL_VERSION}-1.deb_amd64.deb -O powershell.deb
+    chmod +x ./download_powershell.sh; \
+    ./download_powershell.sh
 
 FROM debian:12.9-slim
 
@@ -24,14 +25,24 @@ ENV BACKUP_ORGANIZATION_ONLY=False
 WORKDIR /app
 
 COPY --from=builder /src/bw /usr/local/bin/bw
-COPY --from=builder /src/powershell.deb /app/powershell.deb
+COPY --from=builder /src/powershell.tar.gz .
 COPY src/start.ps1 .
 
-RUN dpkg -i /app/powershell.deb; \
-    apt update; \
-    apt -y install -f; \
-    rm -f /app/powershell.deb;\
-    groupadd -g ${GID} bitwarden; \
+RUN apt update; \
+    apt -y install libc6 \
+                libgcc-s1 \
+                libgssapi-krb5-2 \
+                libicu72 \
+                libssl3 \
+                libstdc++6 \
+                zlib1g; \
+    mkdir -p /opt/microsoft/powershell/7; \
+    tar zxf /app/powershell.tar.gz -C /opt/microsoft/powershell/7; \
+    chmod +x /opt/microsoft/powershell/7/pwsh; \
+    ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh; \
+    rm -f /app/powershell.tar.gz
+
+RUN groupadd -g ${GID} bitwarden; \
     useradd bitwarden -u ${UID} -g bitwarden; \
     mkdir -p /data; \
     chown -R bitwarden:bitwarden /data; \

@@ -12,7 +12,7 @@ RUN apk update; \
 FROM alpine:3.21.2
 
 LABEL NAME="Bitwarden CLI"
-LABEL VERSION="2025.1.0"
+LABEL VERSION="2025.1.1"
 
 ENV NODE_OPTIONS="--no-deprecation"
 

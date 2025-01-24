@@ -1,15 +1,15 @@
-FROM alpine:3.21.2 AS builder
-
-ENV POWERSHELL_VERSION="7.4.6"
+FROM debian:12.9 AS builder
 
 WORKDIR /src
 
-RUN apk update; \
-    apk add curl; \
-    curl -L https://github.com/PowerShell/PowerShell/releases/download/v${POWERSHELL_VERSION}/powershell-${POWERSHELL_VERSION}-linux-musl-x64.tar.gz -o /src/powershell.tar.gz
+COPY src/download_powershell.sh .
 
+RUN apt update -y; \
+    apt install wget -y; \
+    chmod +x ./download_powershell.sh; \
+    ./download_powershell.sh
 
-FROM alpine:3.21.2
+FROM debian:12.9-slim
 
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2025.1.1"
@@ -24,35 +24,28 @@ ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
 
+COPY --from=builder /src/powershell.tar.gz .
 COPY src/start.ps1 .
-COPY --from=builder /src/powershell.tar.gz /app/powershell.tar.gz
 
-RUN apk --no-cache update; \
-    apk add --no-cache npm \
-                        ca-certificates \
-                        less \
-                        ncurses-terminfo-base \
-                        krb5-libs \
-                        libgcc \
-                        libintl \
-                        libssl3 \
-                        libstdc++ \
-                        tzdata \
-                        userspace-rcu \
-                        zlib \
-                        icu-libs \
-                        curl; \
-    apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache \
-                                                                lttng-ust \
-                                                                 openssh-client; \
+RUN apt update; \
+    apt -y install libc6 \
+                libgcc-s1 \
+                libgssapi-krb5-2 \
+                libicu72 \
+                libssl3 \
+                libstdc++6 \
+                zlib1g \
+                nodejs \
+                npm; \
     mkdir -p /opt/microsoft/powershell/7; \
     tar zxf /app/powershell.tar.gz -C /opt/microsoft/powershell/7; \
-    rm -f /app/powershell.tar.gz; \
     chmod +x /opt/microsoft/powershell/7/pwsh; \
     ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh; \
-    npm install -g @bitwarden/cli; \
-    addgroup bitwarden -g ${GID}; \
-    adduser bitwarden -u ${UID} -D -G bitwarden; \
+    rm -f /app/powershell.tar.gz; \
+    npm install -g @bitwarden/cli
+
+RUN groupadd -g ${GID} bitwarden; \
+    useradd bitwarden -u ${UID} -g bitwarden; \
     mkdir -p /data; \
     chown -R bitwarden:bitwarden /data; \
     mkdir -p "/home/bitwarden/.config/Bitwarden CLI"; \

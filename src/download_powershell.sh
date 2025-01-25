@@ -8,7 +8,7 @@ POWERSHELL_VERSION="7.4.7"
 arch=$(lscpu | grep Architecture)
 if [[ $arch == *"x86_64"* ]]; then
     POWERSHELL_ARCH="x64"
-elif [[ $arch == *"arm64"* ]]; then
+elif [[ $arch == *"aarch64"* ]]; then
     POWERSHELL_ARCH="arm64"
 else
     exit 1

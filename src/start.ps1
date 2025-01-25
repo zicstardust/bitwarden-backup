@@ -40,32 +40,32 @@ function Interval {
 
 function CheckVariables {
     if (-not ($env:BW_CLIENTID)){
-        Write-Error "BW_CLIENTID not set"
+        Write-Host "BW_CLIENTID not set" -ForegroundColor Red
         exit 1
     }
     
     if (-not ($env:BW_CLIENTSECRET)){
-        Write-Error "BW_CLIENTSECRET not set"
+        Write-Host "BW_CLIENTSECRET not set" -ForegroundColor Red
         exit 1
     }
     
     if (-not ($env:MASTER_PASSWORD)){
-        Write-Error "MASTER_PASSWORD not set"
+        Write-Host "MASTER_PASSWORD not set" -ForegroundColor Red
         exit 1
     }
     
     if (-not ($env:ENCRYPTION_KEY)){
-        Write-Error "ENCRYPTION_KEY not set"
+        Write-Host "ENCRYPTION_KEY not set" -ForegroundColor Red
         exit 1
     }
 
     if(-not($env:KEEP_LAST -match "^\d+$")){
-        Write-Error "invalid KEEP_LAST"
+        Write-Host "invalid KEEP_LAST" -ForegroundColor Red
         exit 1
     }
     
     if($(Interval -Interval $env:INTERVAL -CheckError) -eq $true){
-        Write-Error "invalid INTERVAL"
+        Write-Host "invalid INTERVAL" -ForegroundColor Red
         exit 1
     }
    

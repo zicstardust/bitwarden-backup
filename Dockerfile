@@ -28,7 +28,8 @@ COPY --from=builder /src/powershell.tar.gz .
 COPY src/start.ps1 .
 
 RUN apt update; \
-    apt -y install libc6 \
+    apt -y install --no-install-recommends --no-install-suggests \
+                libc6 \
                 libgcc-s1 \
                 libgssapi-krb5-2 \
                 libicu72 \

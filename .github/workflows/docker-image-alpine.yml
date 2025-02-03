@@ -1,4 +1,4 @@
-name: Push image tag latest/node to docker hub
+name: Push image tag alpine to docker hub
 
 on:
   push:

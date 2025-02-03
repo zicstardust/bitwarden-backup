@@ -1,0 +1,9 @@
+services:
+  bitwarden-backup:
+    container_name: bitwarden-backup-alpine
+    image: bitwarden-backup:alpine
+    build:
+      dockerfile: Dockerfile.alpine
+    env_file: .env
+    volumes:
+      - ./data/:/data/

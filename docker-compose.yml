@@ -1,7 +1,9 @@
 services:
   bitwarden-backup:
-    container_name: bitwarden-backup
-    build: .
+    container_name: bitwarden-backup-latest
+    image: bitwarden-backup:latest
+    build:
+      dockerfile: Dockerfile
     env_file: .env
     volumes:
       - ./data/:/data/

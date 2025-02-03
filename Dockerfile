@@ -1,14 +1,3 @@
-FROM debian:12.9 AS builder
-
-WORKDIR /src
-
-COPY src/download_powershell.sh .
-
-RUN apt update -y; \
-    apt install wget -y; \
-    chmod +x ./download_powershell.sh; \
-    ./download_powershell.sh
-
 FROM debian:12.9-slim
 
 LABEL NAME="Bitwarden CLI"
@@ -24,25 +13,33 @@ ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
 
-COPY --from=builder /src/powershell.tar.gz .
+COPY src/download_powershell.sh .
 COPY src/start.ps1 .
 
 RUN apt update; \
-    apt -y install --no-install-recommends --no-install-suggests \
-                libc6 \
-                libgcc-s1 \
-                libgssapi-krb5-2 \
-                libicu72 \
-                libssl3 \
-                libstdc++6 \
-                zlib1g \
-                nodejs \
-                npm; \
+    #apt install wget -y; \
+    apt install --no-install-recommends --no-install-suggests wget ca-certificates -y; \
+    chmod +x ./download_powershell.sh; \
+    ./download_powershell.sh; \
     mkdir -p /opt/microsoft/powershell/7; \
     tar zxf /app/powershell.tar.gz -C /opt/microsoft/powershell/7; \
     chmod +x /opt/microsoft/powershell/7/pwsh; \
     ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh; \
-    rm -f /app/powershell.tar.gz; \
+    rm -f /app/powershell.tar.gz /app/download_powershell.sh; \
+    #apt remove wget -y; \
+    apt remove wget ca-certificates -y; \
+    apt autoremove -y
+
+RUN apt -y install --no-install-recommends --no-install-suggests \
+        libc6 \
+        libgcc-s1 \
+        libgssapi-krb5-2 \
+        libicu72 \
+        libssl3 \
+        libstdc++6 \
+        zlib1g \
+        nodejs \
+        npm; \
     npm install -g @bitwarden/cli
 
 RUN groupadd -g ${GID} bitwarden; \

@@ -6,11 +6,13 @@ on:
     paths:
       - 'Dockerfile.alpine'
       - 'src/**'
+      - '.github/workflows/docker-image-alpine.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'Dockerfile.alpine'
       - 'src/**'
+      - '.github/workflows/docker-image-alpine.yml'
 
 env:
   PLATAFORM_ARCH: linux/amd64
@@ -47,6 +49,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: Dockerfile.alpine
           platforms: ${{ env.PLATAFORM_ARCH }}
           push: true
           tags: ${{ env.CONTAINER_REPO }}:alpine

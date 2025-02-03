@@ -6,11 +6,13 @@ on:
     paths:
       - 'Dockerfile'
       - 'src/**'
+      - '.github/workflows/docker-image-node.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'Dockerfile'
       - 'src/**'
+      - '.github/workflows/docker-image-node.yml'
 
 env:
   PLATAFORM_ARCH: linux/amd64,linux/arm64/v8
@@ -47,6 +49,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: Dockerfile
           platforms: ${{ env.PLATAFORM_ARCH }}
           push: true
           tags: |

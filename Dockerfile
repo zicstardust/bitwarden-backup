@@ -12,7 +12,7 @@ RUN apt update -y; \
 FROM debian:12.9-slim
 
 LABEL NAME="Bitwarden CLI"
-LABEL VERSION="2025.1.1"
+LABEL VERSION="2025.1.2"
 
 ENV NODE_OPTIONS="--no-deprecation"
 

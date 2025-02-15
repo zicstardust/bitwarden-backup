@@ -25,4 +25,9 @@ fi
 
 URL="https://github.com/PowerShell/PowerShell/releases/download/v${POWERSHELL_VERSION}/powershell-${POWERSHELL_VERSION}-${POWERSHELL_PLATAFORM}-${POWERSHELL_ARCH}.tar.gz"
 
-wget ${URL} -O powershell.tar.gz
+wget ${URL} -O /tmp/powershell.tar.gz
+mkdir -p /opt/microsoft/powershell/7
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7
+chmod +x /opt/microsoft/powershell/7/pwsh
+ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh
+rm -f /tmp/powershell.tar.gz

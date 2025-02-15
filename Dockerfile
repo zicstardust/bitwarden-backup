@@ -13,19 +13,15 @@ ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
 
-COPY src/download_powershell.sh .
+COPY src/install_powershell.sh .
 COPY src/start.ps1 .
 
 RUN apt update; \
     #apt install wget -y; \
     apt install --no-install-recommends --no-install-suggests wget ca-certificates -y; \
-    chmod +x ./download_powershell.sh; \
-    ./download_powershell.sh; \
-    mkdir -p /opt/microsoft/powershell/7; \
-    tar zxf /app/powershell.tar.gz -C /opt/microsoft/powershell/7; \
-    chmod +x /opt/microsoft/powershell/7/pwsh; \
-    ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh; \
-    rm -f /app/powershell.tar.gz /app/download_powershell.sh; \
+    chmod +x ./install_powershell.sh; \
+    ./install_powershell.sh; \
+    rm -f /app/install_powershell.sh; \
     #apt remove wget -y; \
     apt remove wget ca-certificates -y; \
     apt autoremove -y

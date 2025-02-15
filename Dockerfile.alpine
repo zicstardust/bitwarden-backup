@@ -13,17 +13,13 @@ ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
 
-COPY src/download_powershell.sh .
+COPY src/install_powershell.sh .
 COPY src/start.ps1 .
 
 RUN apk add --no-cache --virtual builddeps bash; \
-    chmod +x ./download_powershell.sh; \
-    ./download_powershell.sh --alpine; \
-    mkdir -p /opt/microsoft/powershell/7; \
-    tar zxf /app/powershell.tar.gz -C /opt/microsoft/powershell/7; \
-    chmod +x /opt/microsoft/powershell/7/pwsh; \
-    ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh; \
-    rm -f /app/powershell.tar.gz /app/download_powershell.sh; \
+    chmod +x ./install_powershell.sh; \
+    ./install_powershell.sh --alpine; \
+    rm -f /app/install_powershell.sh; \
     apk del builddeps
 
 RUN apk add --no-cache \

@@ -11,7 +11,7 @@ ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
 
-COPY src/download_powershell.sh .
+COPY src/install_powershell.sh .
 COPY src/start.ps1 .
 
 RUN apt update; \
@@ -19,13 +19,9 @@ RUN apt update; \
     wget https://vault.bitwarden.com/download/?app=cli\&platform=linux -O bitwarden-cli.zip; \
     unzip bitwarden-cli.zip; \
     mv /app/bw /usr/local/bin/bw; \
-    chmod +x ./download_powershell.sh; \
-    ./download_powershell.sh; \
-    mkdir -p /opt/microsoft/powershell/7; \
-    tar zxf /app/powershell.tar.gz -C /opt/microsoft/powershell/7; \
-    chmod +x /opt/microsoft/powershell/7/pwsh; \
-    ln -s /opt/microsoft/powershell/7/pwsh /usr/bin/pwsh; \
-    rm -f /app/powershell.tar.gz /app/download_powershell.sh /app/bitwarden-cli.zip; \
+    chmod +x ./install_powershell.sh; \
+    ./install_powershell.sh; \
+    rm -f /app/install_powershell.sh /app/bitwarden-cli.zip; \
     apt -y remove wget ca-certificates unzip; \
     apt -y autoremove
 

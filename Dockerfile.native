@@ -1,4 +1,4 @@
-FROM debian:12.9-slim
+FROM debian:12.10-slim
 
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2025.2.0"

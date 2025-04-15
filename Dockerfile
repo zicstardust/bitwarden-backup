@@ -1,7 +1,7 @@
 FROM debian:12.10-slim
 
 LABEL NAME="Bitwarden CLI"
-LABEL VERSION="2025.2.0"
+LABEL VERSION="2025.3.0"
 
 ENV NODE_OPTIONS="--no-deprecation"
 

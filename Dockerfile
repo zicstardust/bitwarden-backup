@@ -17,12 +17,10 @@ COPY src/install_powershell.sh .
 COPY src/start.ps1 .
 
 RUN apt update; \
-    #apt install wget -y; \
     apt install --no-install-recommends --no-install-suggests wget ca-certificates -y; \
     chmod +x ./install_powershell.sh; \
     ./install_powershell.sh; \
     rm -f /app/install_powershell.sh; \
-    #apt remove wget -y; \
     apt remove wget ca-certificates -y; \
     apt autoremove -y
 

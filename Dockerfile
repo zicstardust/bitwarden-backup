@@ -4,6 +4,7 @@ LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2025.3.0"
 
 ENV NODE_OPTIONS="--no-deprecation"
+ENV BITWARDENCLI_APPDATA_DIR="/app"
 
 ENV UID=1000
 ENV GID=1000
@@ -40,11 +41,11 @@ RUN groupadd -g ${GID} bitwarden; \
     useradd bitwarden -u ${UID} -g bitwarden; \
     mkdir -p /data; \
     chown -R bitwarden:bitwarden /data; \
-    mkdir -p "/home/bitwarden/.config/Bitwarden CLI"; \
-    touch "/home/bitwarden/.config/Bitwarden CLI/data.json"; \
-    chown -R bitwarden:bitwarden /home/bitwarden; \
+    touch "/app/data.json"; \
     chown -R bitwarden:bitwarden /app; \
     chmod +x /app/start.ps1
+
+WORKDIR /data    
 
 USER bitwarden
 

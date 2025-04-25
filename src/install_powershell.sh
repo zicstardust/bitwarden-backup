@@ -4,7 +4,7 @@
 #Last Stable - https://aka.ms/powershell-release?tag=stable
 
 
-POWERSHELL_VERSION="7.4.7"
+POWERSHELL_VERSION="7.5.1"
 
 
 if [ "$1" == "--alpine" ]; then

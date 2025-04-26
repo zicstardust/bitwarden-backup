@@ -1,4 +1,4 @@
-name: Push image tag latest/node to docker hub
+name: Push image tag latest to docker hub
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
     paths:
       - 'Dockerfile'
       - 'src/**'
-      - '.github/workflows/docker-image-node.yml'
+      - '.github/workflows/docker-image-latest.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'Dockerfile'
       - 'src/**'
-      - '.github/workflows/docker-image-node.yml'
+      - '.github/workflows/docker-image-latest.yml'
 
 env:
   PLATAFORM_ARCH: linux/amd64,linux/arm64/v8
@@ -52,6 +52,4 @@ jobs:
           file: Dockerfile
           platforms: ${{ env.PLATAFORM_ARCH }}
           push: true
-          tags: |
-            ${{ env.CONTAINER_REPO }}:latest
-            ${{ env.CONTAINER_REPO }}:node
+          tags: ${{ env.CONTAINER_REPO }}:latest

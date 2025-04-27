@@ -78,6 +78,7 @@ function Remove-OldBackups {
     )
 
     if ($env:KEEP_LAST -eq 0){
+        Write-Host "Delete old backup: KEEP_LAST=0, keeping all backups" -ForegroundColor Yellow
         return
     }
 
@@ -86,11 +87,11 @@ function Remove-OldBackups {
     if ($files_list.Length -ge $env:KEEP_LAST) {
         
         for ($i = 0; $i -lt $($files_list.Length - $env:KEEP_LAST); $i++) {
-           Remove-Item -LiteralPath "/data/$($files_list[$i])" -Force -Confirm:$false -Verbose
+           Remove-Item -LiteralPath "/data/$($files_list[$i])" -Force -Confirm:$false
+           Write-Host "Delete old backup: $($files_list[$i])" -ForegroundColor Yellow
         }
-
     } else {
-        Write-Output "Number of backups less than KEEP_LAST"
+        Write-Host "Delete old backup: Nothing - Number of backups less than KEEP_LAST" -ForegroundColor Yellow
     }
     
 }
@@ -149,23 +150,20 @@ function Backup {
 
     #backup
     if ($env:BACKUP_ORGANIZATION_ONLY -eq "True"){
-        Write-Output "BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup"
+        Write-Host "BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup..."
     } else {
         $FILENAME="${DATE}_bitwarden-backup.json"
-        Write-Output "Backup individual vault..."
         /usr/local/bin/bw --raw --session $BW_SESSION `
                             export --format encrypted_json `
                             --password $env:ENCRYPTION_KEY | `
                             Out-File -FilePath "/data/$FILENAME"
+        Write-Host "Backup individual vault done: $FILENAME" -ForegroundColor Green
         Remove-OldBackups -Include "bitwarden-backup"
     }
 
     #backup organizations
     if ($env:ORGANIZATION_IDS) {
         $ORGANIZATIONS=$env:ORGANIZATION_IDS.Split(',')
-
-        Write-Output "Backup organization vault..."
-
         foreach ($ORGANIZATION in $ORGANIZATIONS) {
             $FILENAME_ORG="${DATE}_ORG_${ORGANIZATION}.json"
 
@@ -173,8 +171,11 @@ function Backup {
                                 export --organizationid $ORGANIZATION --format encrypted_json `
                                 --password $env:ENCRYPTION_KEY | `
                                 Out-File -FilePath "/data/$FILENAME_ORG"
+            Write-Host "Backup organization vault done: $FILENAME_ORG" -ForegroundColor Green
             Remove-OldBackups -Include "ORG_${ORGANIZATION}"
         }
+    } else {
+        Write-Host "No set ORGANIZATION_IDS, skip organization vault backup..."
     }
 }
 
@@ -183,7 +184,7 @@ function Main {
     while ($true) {
         CheckVariables
         Backup
-        Write-Output "next execution in $env:INTERVAL"
+        Write-Host "Next execution: $((Get-Date).AddSeconds($(Interval -Interval $env:INTERVAL)).ToString("MM/dd/yyyy HH:mm:ss"))"
         Start-Sleep -Seconds $(Interval -Interval $env:INTERVAL)
     }
     

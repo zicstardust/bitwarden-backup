@@ -104,8 +104,8 @@ function RemoveOldBackups(include){
 
     if (files_list.length >= process.env.KEEP_LAST){
         for (var i = 0; i < (files_list.length - process.env.KEEP_LAST); i++) {
-            fs.unlink("/data/" + i);
-            console.log("Delete old backup: " + i);
+            fs.unlinkSync(`/data/${files_list[i]}`);
+            console.log(`Delete old backup: ${files_list[i]}`);
           }
     } else {
         console.log("Delete old backup: Nothing - Number of backups less than KEEP_LAST");
@@ -172,7 +172,7 @@ function Backup(){
     if (process.env.BACKUP_ORGANIZATION_ONLY == true) {
         console.log("BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup...")
     } else {
-        FILENAME = date + "_bitwarden-backup.json"
+        FILENAME = `${date}_bitwarden-backup.json`
         backup = bw(`--raw --session ${BW_SESSION} export --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
         const fs = require('fs')
         fs.writeFile("/data/" + FILENAME, backup, (err) => {
@@ -187,16 +187,15 @@ function Backup(){
         ORGANIZATIONS = process.env.ORGANIZATION_IDS.split(',')
 
         ORGANIZATIONS.forEach(element => {
-            FILENAME = date + "_ORG_" + element + ".json"
+            FILENAME = `${date}_ORG_${element}.json`
             backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
             const fs = require('fs')
-            fs.writeFile("/data/" + FILENAME, backup, (err) => {
+            fs.writeFile(`/data/${FILENAME}`, backup, (err) => {
                 if (err) throw err;
             })
+            console.log(`Backup organization vault done: ${FILENAME}`)
+            RemoveOldBackups(`ORG_${element}`)
         })
-        console.log("Backup organization vault done: " + FILENAME)
-        RemoveOldBackups("ORG_" + ORGANIZATION)
-
     } else {
         console.log("No set ORGANIZATION_IDS, skip organization vault backup...")
     }

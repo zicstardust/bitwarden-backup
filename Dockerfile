@@ -3,6 +3,8 @@ FROM debian:12.10-slim
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2025.3.0"
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 ENV NODE_OPTIONS="--no-deprecation"
 ENV BITWARDENCLI_APPDATA_DIR="/app"
 

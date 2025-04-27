@@ -18,18 +18,18 @@ WORKDIR /app
 COPY src/install_powershell.sh .
 COPY src/start.ps1 .
 
-RUN apt update; \
-    apt -y install --no-install-recommends --no-install-suggests wget ca-certificates unzip; \
+RUN apt-get update; \
+    apt-get -y install --no-install-recommends --no-install-suggests wget ca-certificates unzip; \
     wget https://vault.bitwarden.com/download/?app=cli\&platform=linux -O bitwarden-cli.zip; \
     unzip bitwarden-cli.zip; \
     mv /app/bw /usr/local/bin/bw; \
     chmod +x ./install_powershell.sh; \
     ./install_powershell.sh; \
     rm -f /app/install_powershell.sh /app/bitwarden-cli.zip; \
-    apt -y remove wget ca-certificates unzip; \
-    apt -y autoremove
+    apt-get -y remove wget ca-certificates unzip; \
+    apt-get -y autoremove
 
-RUN apt -y install --no-install-recommends --no-install-suggests \
+RUN apt-get -y install --no-install-recommends --no-install-suggests \
         libc6 \
         libgcc-s1 \
         libgssapi-krb5-2 \

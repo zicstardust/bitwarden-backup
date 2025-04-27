@@ -19,15 +19,15 @@ WORKDIR /app
 COPY src/install_powershell.sh .
 COPY src/start.ps1 .
 
-RUN apt update; \
-    apt install --no-install-recommends --no-install-suggests wget ca-certificates -y; \
+RUN apt-get update; \
+    apt-get install --no-install-recommends --no-install-suggests wget ca-certificates -y; \
     chmod +x ./install_powershell.sh; \
     ./install_powershell.sh; \
     rm -f /app/install_powershell.sh; \
-    apt remove wget ca-certificates -y; \
-    apt autoremove -y
+    apt-get remove wget ca-certificates -y; \
+    apt-get autoremove -y
 
-RUN apt -y install --no-install-recommends --no-install-suggests \
+RUN apt-get -y install --no-install-recommends --no-install-suggests \
         libc6 \
         libgcc-s1 \
         libgssapi-krb5-2 \

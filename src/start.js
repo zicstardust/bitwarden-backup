@@ -1,61 +1,38 @@
-function bw (args, envs = ""){
-    const execSync = require("child_process").execSync;
-    //const result = execSync(envs + " ./node_modules/@bitwarden/cli/build/bw.js " + args);
-    const result = execSync(envs + " /usr/local/bin/bw " + args);
-    return result.toString("utf8");
-}
+import fs from "fs";
+import child_process from "child_process";
 
-/*
 function bw (args){
-    const execSync = require("child_process").execSync;
-    //const result = execSync("./node_modules/@bitwarden/cli/build/bw.js " + args);
-    const result = execSync("/usr/local/bin/bw " + args);
+    //const child_process = require("child_process");
+    //const result child_process.execSync(`./node_modules/@bitwarden/cli/build/bw.js ${args}`);
+    const result = child_process.execSync(`/usr/local/bin/bw ${args}`);
     return result.toString("utf8");
 }
 
 
-
-
-const { exit } = require("process");
-function bw (args){
-    const { exec } = require("child_process");    
-    exec("/usr/local/bin/bw " + args, (error, stdout, stderr) => {
-    //exec("node_modules/@bitwarden/cli/build/bw.js " + args, (error, stdout, stderr) => {
-        if (error) {
-            return console.log(`${error.message}`);
-        }
-        if (stderr) {
-            return console.log(`${stderr}`);;
-        }
-        return console.log(`${stdout}`);
-    });
-}
-*/
 function Interval(interval) {
-    var lastChar = interval.substr(interval.length - 1);
-    var time = interval.slice(0, -1);
+    let lastChar = interval.substr(interval.length - 1);
+    let time = interval.slice(0, -1);
+    let mm;
 
     if(lastChar == "s") { 
         mm = time*1000
     } 
     else if(lastChar == "m") { 
-        mm = (time*60)*1000
+        mm = time*60000
     }
     else if(lastChar == "h") { 
-        mm = (time*3600)*1000
+        mm = time*3600000
     }
     else if(lastChar == "d") { 
-        mm = (time*86400)*1000
+        mm = time*86400000
     }
     else if(lastChar == "w") { 
-        mm = (time*604800)*1000
+        mm = time*604800000
     }
     else { 
         console.log("interval invalid")
         exit(1)
     }
-    //return new Promise(resolve => setTimeout(resolve, seconds));
-    //return setTimeout("", seconds*1000)
     return mm
 }
 
@@ -98,12 +75,11 @@ function RemoveOldBackups(include){
         return console.log("Delete old backup: KEEP_LAST=0, keeping all backups")
     }
 
-    var fs = require('fs');
-    var dirContents = fs.readdirSync('/data/');
-    var files_list = dirContents.filter((dirContents) => dirContents.match(`${include}`));
+    let dirContents = fs.readdirSync('/data/');
+    let files_list = dirContents.filter((dirContents) => dirContents.match(`${include}`));
 
     if (files_list.length >= process.env.KEEP_LAST){
-        for (var i = 0; i < (files_list.length - process.env.KEEP_LAST); i++) {
+        for (let i = 0; i < (files_list.length - process.env.KEEP_LAST); i++) {
             fs.unlinkSync(`/data/${files_list[i]}`);
             console.log(`Delete old backup: ${files_list[i]}`);
           }
@@ -113,7 +89,7 @@ function RemoveOldBackups(include){
 }
 
 function SetURLServer(){
-    var BW_SERVER = process.env.BW_SERVER_BASE
+    let BW_SERVER = process.env.BW_SERVER_BASE
 
     if(process.env.BW_SERVER_WEB_VAULT) {
         BW_SERVER = BW_SERVER + ` --web-vault ${process.env.BW_SERVER_WEB_VAULT}`;
@@ -147,34 +123,31 @@ function SetURLServer(){
 }
 
 function Backup(){
-    var now = new Date();
-    //date = now.getFullYear() + "." + now.getMonth() + "." + now.getDate() + "-" + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds()
-    date = `${now.getFullYear()}.${now.getMonth()}.${now.getDate()}-${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+    let now = new Date();
+    var date = `${now.getFullYear()}.${now.getMonth()}.${now.getDate()}-${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
 
-    check_status = bw("status")
+    let check_status = bw("status")
 
 
-    if (process.env.BW_SERVER_BASE) {
+    if ((process.env.BW_SERVER_BASE) && (check_status.search(`${process.env.BW_SERVER_BASE}`) < 0)) {
         SetURLServer()
     }
     
     //login
-    if(check_status.search(`${process.env.CLIENT_ID}`) < 0){
-        //console.log("login...")
-        bw("login --apikey",`BW_CLIENTID=${process.env.BW_CLIENTID} BW_CLIENTSECRET=${process.env.BW_CLIENTSECRET}`)
+    if(check_status.search(`${process.env.BW_CLIENTID.slice(5)}`) < 0){
+        bw("login --apikey")
     }
 
     //get session
-    BW_SESSION = bw(`unlock --raw ${process.env.MASTER_PASSWORD}`)
+    let BW_SESSION = bw(`unlock --raw ${process.env.MASTER_PASSWORD}`)
 
 
     //backup
     if (process.env.BACKUP_ORGANIZATION_ONLY == true) {
         console.log("BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup...")
     } else {
-        FILENAME = `${date}_bitwarden-backup.json`
-        backup = bw(`--raw --session ${BW_SESSION} export --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
-        const fs = require('fs')
+        let FILENAME = `${date}_bitwarden-backup.json`
+        let backup = bw(`--raw --session ${BW_SESSION} export --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
         fs.writeFile("/data/" + FILENAME, backup, (err) => {
             if (err) throw err;
         })
@@ -184,12 +157,11 @@ function Backup(){
 
     //backup organizations
     if(process.env.ORGANIZATION_IDS) {
-        ORGANIZATIONS = process.env.ORGANIZATION_IDS.split(',')
+        let ORGANIZATIONS = process.env.ORGANIZATION_IDS.split(',')
 
         ORGANIZATIONS.forEach(element => {
-            FILENAME = `${date}_ORG_${element}.json`
-            backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
-            const fs = require('fs')
+            let FILENAME = `${date}_ORG_${element}.json`
+            let backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
             fs.writeFile(`/data/${FILENAME}`, backup, (err) => {
                 if (err) throw err;
             })
@@ -201,19 +173,11 @@ function Backup(){
     }
 }
 
-//Main
-function Main(){
-    //CheckVariables
-    //Backup
-    return console.log("nothing")
-    
-}
 
-
-//while(true){
+while(true){
     CheckVariables()
     Backup()
     console.log("Next execution " + process.env.INTERVAL)
-    setTimeout(Main, Interval(process.env.INTERVAL))
-//}
-
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+    await delay(Interval(process.env.INTERVAL))
+}

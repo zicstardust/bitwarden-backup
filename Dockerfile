@@ -13,13 +13,14 @@ ENV KEEP_LAST=0
 ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
-COPY app.js .
-COPY package*.json .
 
-#RUN npm install -g @bitwarden/cli; \
-RUN groupmod -g {GID} node; \
-    usermod -u ${UID} node; \
-    mkdir -p /data /app; \
+COPY app.js package.json ./
+
+RUN apk add --no-cache --virtual builddeps shadow; \
+    groupmod --gid ${GID} node; \
+    usermod --uid ${UID} node; \
+    apk del builddeps; \
+    mkdir -p /data; \
     touch "/app/data.json"; \
     chown -R node:node /data /app; \
     npm install;

@@ -27,6 +27,7 @@ services:
     restart: unless-stopped 
     container_name: bitwarden-backup
     image: zicstardust/bitwarden-backup:latest
+    tty: true
     environment:
       TZ: America/New_York
       UID: 1000

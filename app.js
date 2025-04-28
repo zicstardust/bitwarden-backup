@@ -46,8 +46,8 @@ function CheckVariables (){
         exit(1)
     }
 
-    if (!process.env.MASTER_PASSWORD){
-        console.log("MASTER_PASSWORD not set")
+    if (!process.env.BW_PASSWORD){
+        console.log("BW_PASSWORD not set")
         exit(1)
     }
 
@@ -138,7 +138,8 @@ function Backup(){
     }
 
     //get session
-    let BW_SESSION = bw(`unlock --raw ${process.env.MASTER_PASSWORD}`)
+    //let BW_SESSION = bw(`unlock --raw ${process.env.BW_PASSWORD}`)
+    let BW_SESSION = bw(`unlock --passwordenv ${process.env.BW_PASSWORD} --raw`)
 
 
     //backup

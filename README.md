@@ -34,7 +34,7 @@ services:
       INTERVAL: 1d
       BW_CLIENTID: ${BW_CLIENTID}
       BW_CLIENTSECRET: ${BW_CLIENTSECRET}
-      MASTER_PASSWORD: ${MASTER_PASSWORD}
+      BW_PASSWORD: ${BW_PASSWORD}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
     volumes:
       - /path/to/data/:/data/
@@ -49,7 +49,7 @@ docker run -d \
   -e INTERVAL=1d \
   -e BW_CLIENTID=${BW_CLIENTSECRET} \
   -e BW_CLIENTSECRET=${BW_CLIENTSECRET} \
-  -e MASTER_PASSWORD=${MASTER_PASSWORD} \
+  -e BW_PASSWORD=${BW_PASSWORD} \
   -e ENCRYPTION_KEY=${ENCRYPTION_KEY} \
   -v /path/to/data/:/data/ \
   --restart unless-stopped \
@@ -66,7 +66,7 @@ docker run -d \
 | `INTERVAL` | interval between executions<br/><br/>examples:<br/><br/>`1d - 1 day`<br/><br/>`10m - 10 minutes`<br/><br/>`1w - 1 week`<br/><br/>`65s - 65 seconds` | 1d |
 | `BW_CLIENTID` | Set User Client ID ||
 | `BW_CLIENTSECRET` | Set User Client Secret ||
-| `MASTER_PASSWORD` | Set User Master Password ||
+| `BW_PASSWORD` | Set User Master Password ||
 | `ENCRYPTION_KEY` | Set password for file encryption ||
 | `ORGANIZATION_IDS` | Backup organization vault<br/><br/>array separated by `,` ||
 | `BACKUP_ORGANIZATION_ONLY` | Skip individual vault backup | False |

@@ -9,16 +9,18 @@
     "keywords": [
         "bitwarden",
         "backup",
-        "container"
+        "container",
+        "docker"
     ],
-    "author": "zicstardust <contact@zicstardust.com>",
     "main": "app.js",
+    "type": "module",
+    "author": "zicstardust <contact@zicstardust.com>",
     "license": "None",
     "bugs": {
       "url": "https://github.com/zicstardust/bitwarden-backup/issues"
     },
     "homepage": "https://hub.docker.com/r/zicstardust/bitwarden-backup",
     "dependencies": {
-        "@bitwarden-cli": "2025.3.0"
+        "@bitwarden/cli": "2025.3.0"
       }
   }

@@ -3,7 +3,7 @@ import child_process from "child_process";
 
 function bw (args){
     //const child_process = require("child_process");
-    const result = child_process.execSync(`./node_modules/@bitwarden/cli/build/bw.js ${args}`);
+    const result = child_process.execSync(`/app/node_modules/@bitwarden/cli/build/bw.js ${args}`);
     return result.toString("utf8");
 }
 
@@ -138,8 +138,7 @@ function Backup(){
     }
 
     //get session
-    //let BW_SESSION = bw(`unlock --raw ${process.env.BW_PASSWORD}`)
-    let BW_SESSION = bw(`unlock --passwordenv ${process.env.BW_PASSWORD} --raw`)
+    let BW_SESSION = bw(`unlock ${process.env.BW_PASSWORD} --raw`)
 
 
     //backup

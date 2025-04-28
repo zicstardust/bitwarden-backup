@@ -8,7 +8,7 @@
 
 | Architecture | Available | Tag |
 | :----: | :----: | ---- |
-| x86-64 | ✅ | latest, native, alpine |
+| x86-64 | ✅ | latest |
 | arm64 | ✅ | latest |
 
 
@@ -18,8 +18,6 @@
 | Tag | Available | Description |
 | :----: | :----: |--- |
 | [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile) | ✅ | Bitwarden CLI Node version |
-| [`alpine`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile.alpine) | ✅ | Bitwarden CLI Node version on Alpine |
-| [`native`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile.native) | ✅ | Bitwarden CLI binary native |
 
 ## Usage
 ### docker-compose

@@ -1,9 +1,7 @@
-FROM debian:12.10-slim
+FROM node:lts-alpine
 
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2025.3.0"
-
-ARG DEBIAN_FRONTEND=noninteractive
 
 ENV NODE_OPTIONS="--no-deprecation"
 ENV BITWARDENCLI_APPDATA_DIR="/app"
@@ -15,40 +13,19 @@ ENV KEEP_LAST=0
 ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
+COPY app.js .
+COPY package*.json .
 
-COPY src/install_powershell.sh .
-COPY src/start.ps1 .
-
-RUN apt-get update; \
-    apt-get install --no-install-recommends --no-install-suggests wget ca-certificates -y; \
-    chmod +x ./install_powershell.sh; \
-    ./install_powershell.sh; \
-    rm -f /app/install_powershell.sh; \
-    apt-get remove wget ca-certificates -y; \
-    apt-get autoremove -y
-
-RUN apt-get -y install --no-install-recommends --no-install-suggests \
-        libc6 \
-        libgcc-s1 \
-        libgssapi-krb5-2 \
-        libicu72 \
-        libssl3 \
-        libstdc++6 \
-        zlib1g \
-        nodejs \
-        npm; \
-    npm install -g @bitwarden/cli
-
-RUN groupadd -g ${GID} bitwarden; \
-    useradd bitwarden -u ${UID} -g bitwarden; \
-    mkdir -p /data; \
-    chown -R bitwarden:bitwarden /data; \
+#RUN npm install -g @bitwarden/cli; \
+RUN groupmod -g {GID} node; \
+    usermod -u ${UID} node; \
+    mkdir -p /data /app; \
     touch "/app/data.json"; \
-    chown -R bitwarden:bitwarden /app; \
-    chmod +x /app/start.ps1
+    chown -R node:node /data /app; \
+    npm install;
 
-WORKDIR /data    
+USER node
 
-USER bitwarden
+WORKDIR /data
 
-CMD [ "pwsh", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "/app/start.ps1" ]
+CMD [ "node", "/app/app.js" ]

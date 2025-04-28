@@ -5,13 +5,15 @@ on:
     branches: [ "main" ]
     paths:
       - 'Dockerfile'
-      - 'src/**'
+      - 'app.js'
+      - 'package.json'
       - '.github/workflows/docker-image-latest.yml'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'Dockerfile'
-      - 'src/**'
+      - 'app.js'
+      - 'package.json'
       - '.github/workflows/docker-image-latest.yml'
 
 env:

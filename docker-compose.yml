@@ -4,5 +4,6 @@ services:
     image: bitwarden-backup:latest
     build: .
     env_file: .env
+    tty: true
     volumes:
       - ./data/:/data/

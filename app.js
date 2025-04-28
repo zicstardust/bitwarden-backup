@@ -26,7 +26,7 @@ function Interval(interval) {
     let time = interval.slice(0, -1);
     let mm;
 
-    let regex = new RegExp('^[0-9]$')
+    let regex = new RegExp('^[0-9]+$')
     if (!regex.test(time)){
         console.log(styleText('red', "Invalid INTERVAL"))
         exit(1)
@@ -76,7 +76,7 @@ function CheckVariables (){
         exit(1)
     }
 
-    let regex = new RegExp('^[0-9]$')
+    let regex = new RegExp('^[0-9]+$')
     if (!regex.test(process.env.KEEP_LAST)){
         console.log(styleText('red', "Invalid KEEP_LAST"))
         exit(1)

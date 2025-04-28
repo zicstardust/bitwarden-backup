@@ -7,11 +7,32 @@ function bw (args){
     return result.toString("utf8");
 }
 
+function DateTime(){
+    let date_ob = new Date();
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    //let hours = date_ob.getHours();
+    let hours = "0" + date_ob.getHours().toString().slice(-2);
+    //let minutes = date_ob.getMinutes();
+    let minutes = date_ob.getMinutes().toString().slice(-2);
+    //let seconds = date_ob.getSeconds();
+    let seconds = date_ob.getSeconds().toString().slice(-2);
+
+    return `${year}.${month}.${date}-${hours}:${minutes}:${seconds}`
+}
+
 
 function Interval(interval) {
     let lastChar = interval.substr(interval.length - 1);
     let time = interval.slice(0, -1);
     let mm;
+
+    let regex = new RegExp('^[0-9]$')
+    if (!regex.test(time)){
+        console.log("invalid INTERVAL")
+        exit(1)
+    }
 
     if(lastChar == "s") { 
         mm = time*1000
@@ -29,7 +50,7 @@ function Interval(interval) {
         mm = time*604800000
     }
     else { 
-        console.log("interval invalid")
+        console.log("invalid INTERVAL")
         exit(1)
     }
     return mm
@@ -56,16 +77,12 @@ function CheckVariables (){
         exit(1)
     }
 
-    var regex = new RegExp('^[0-9]$')
+    let regex = new RegExp('^[0-9]$')
     if (!regex.test(process.env.KEEP_LAST)){
         console.log("invalid KEEP_LAST")
         exit(1)
     }
 
-    //if (!process.env.INTERVAL){
-    //    console.log("INTERVAL not set")
-    //    exit(1)
-    //}
 }
 
 function RemoveOldBackups(include){
@@ -122,11 +139,9 @@ function SetURLServer(){
 }
 
 function Backup(){
-    let now = new Date();
-    var date = `${now.getFullYear()}.${now.getMonth()}.${now.getDate()}-${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+    var date = DateTime()
 
     let check_status = bw("status")
-
 
     if ((process.env.BW_SERVER_BASE) && (check_status.search(`${process.env.BW_SERVER_BASE}`) < 0)) {
         SetURLServer()

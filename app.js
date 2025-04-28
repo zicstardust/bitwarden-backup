@@ -87,7 +87,7 @@ function CheckVariables (){
 function RemoveOldBackups(include){
 
     if (process.env.KEEP_LAST == 0){
-        return console.log(styleText('yellow', "KEEP_LAST=0, keeping all backups"))
+        return console.log(styleText('white', "KEEP_LAST=0, keeping all backups"))
     }
 
     let dirContents = fs.readdirSync('/data/');
@@ -96,10 +96,10 @@ function RemoveOldBackups(include){
     if (files_list.length >= process.env.KEEP_LAST){
         for (let i = 0; i < (files_list.length - process.env.KEEP_LAST); i++) {
             fs.unlinkSync(`/data/${files_list[i]}`);
-            console.log(styleText('yellow', `Delete old backup: ${files_list[i]}`))
+            console.log(styleText('redBright', `Delete old backup: ${files_list[i]}`))
           }
     } else {
-        console.log(styleText('yellow', "No delete old backup, number of backups less than KEEP_LAST"))
+        console.log(styleText('white', "No delete old backup, number of backups less than KEEP_LAST"))
 
     }
 }

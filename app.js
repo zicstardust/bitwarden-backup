@@ -3,8 +3,7 @@ import child_process from "child_process";
 
 function bw (args){
     //const child_process = require("child_process");
-    //const result child_process.execSync(`./node_modules/@bitwarden/cli/build/bw.js ${args}`);
-    const result = child_process.execSync(`/usr/local/bin/bw ${args}`);
+    const result = child_process.execSync(`./node_modules/@bitwarden/cli/build/bw.js ${args}`);
     return result.toString("utf8");
 }
 

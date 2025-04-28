@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import fs from "fs";
 import child_process from "child_process";
+import { styleText } from 'node:util';
 
 function bw (args){
-    //const child_process = require("child_process");
     const result = child_process.execSync(`/app/node_modules/@bitwarden/cli/build/bw.js ${args}`);
     return result.toString("utf8");
 }
@@ -28,7 +28,7 @@ function Interval(interval) {
 
     let regex = new RegExp('^[0-9]$')
     if (!regex.test(time)){
-        console.log("invalid INTERVAL")
+        console.log(styleText('red', "Invalid INTERVAL"))
         exit(1)
     }
 
@@ -48,7 +48,7 @@ function Interval(interval) {
         mm = time*604800000
     }
     else { 
-        console.log("invalid INTERVAL")
+        console.log(styleText('red', "Invalid INTERVAL"))
         exit(1)
     }
     return mm
@@ -56,28 +56,29 @@ function Interval(interval) {
 
 function CheckVariables (){
     if (!process.env.BW_CLIENTID){
-        console.log("BW_CLIENTID not set")
+        console.log(styleText('red', "BW_CLIENTID not set"))
         exit(1)
     }
 
     if (!process.env.BW_CLIENTSECRET){
-        console.log("BW_CLIENTSECRET not set")
+        console.log(styleText('red', "BW_CLIENTSECRET not set"))
         exit(1)
     }
 
     if (!process.env.BW_PASSWORD){
-        console.log("BW_PASSWORD not set")
+        console.log(styleText('red', "BW_PASSWORD not set"))
+
         exit(1)
     }
 
     if (!process.env.ENCRYPTION_KEY){
-        console.log("ENCRYPTION_KEY not set")
+        console.log(styleText('red', "ENCRYPTION_KEY not set"))
         exit(1)
     }
 
     let regex = new RegExp('^[0-9]$')
     if (!regex.test(process.env.KEEP_LAST)){
-        console.log("invalid KEEP_LAST")
+        console.log(styleText('red', "Invalid KEEP_LAST"))
         exit(1)
     }
 
@@ -86,7 +87,7 @@ function CheckVariables (){
 function RemoveOldBackups(include){
 
     if (process.env.KEEP_LAST == 0){
-        return console.log("Delete old backup: KEEP_LAST=0, keeping all backups")
+        return console.log(styleText('yellow', "KEEP_LAST=0, keeping all backups"))
     }
 
     let dirContents = fs.readdirSync('/data/');
@@ -95,10 +96,11 @@ function RemoveOldBackups(include){
     if (files_list.length >= process.env.KEEP_LAST){
         for (let i = 0; i < (files_list.length - process.env.KEEP_LAST); i++) {
             fs.unlinkSync(`/data/${files_list[i]}`);
-            console.log(`Delete old backup: ${files_list[i]}`);
+            console.log(styleText('yellow', `Delete old backup: ${files_list[i]}`))
           }
     } else {
-        console.log("Delete old backup: Nothing - Number of backups less than KEEP_LAST");
+        console.log(styleText('yellow', "No delete old backup, number of backups less than KEEP_LAST"))
+
     }
 }
 
@@ -156,14 +158,14 @@ function Backup(){
 
     //backup
     if (process.env.BACKUP_ORGANIZATION_ONLY == true) {
-        console.log("BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup...")
+        console.log(styleText('white', "BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup..."));
     } else {
         let FILENAME = `${date}_bitwarden-backup.json`
         let backup = bw(`--raw --session ${BW_SESSION} export --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
         fs.writeFile("/data/" + FILENAME, backup, (err) => {
             if (err) throw err;
         })
-        console.log("Backup individual vault done: " + FILENAME)
+        console.log(styleText('green', `Backup individual vault done: ${FILENAME}`));
         RemoveOldBackups("bitwarden-backup")
     }
 
@@ -177,11 +179,11 @@ function Backup(){
             fs.writeFile(`/data/${FILENAME}`, backup, (err) => {
                 if (err) throw err;
             })
-            console.log(`Backup organization vault done: ${FILENAME}`)
+            console.log(styleText('green', `Backup organization vault done: ${FILENAME}`));
             RemoveOldBackups(`ORG_${element}`)
         })
     } else {
-        console.log("No set ORGANIZATION_IDS, skip organization vault backup...")
+        console.log(styleText('white', "No set ORGANIZATION_IDS, skip organization vault backup..."));
     }
 }
 
@@ -189,7 +191,7 @@ function Backup(){
 while(true){
     CheckVariables()
     Backup()
-    console.log("Next execution " + process.env.INTERVAL)
+    console.log(styleText('white', `Next execution ${process.env.INTERVAL}`));
     const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
     await delay(Interval(process.env.INTERVAL))
 }

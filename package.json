@@ -1,7 +1,7 @@
 {
     "name": "bitwarden-backup",
     "description": "Docker automatic bitwarden backup.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/zicstardust/bitwarden-backup.git"

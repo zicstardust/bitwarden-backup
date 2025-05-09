@@ -3,8 +3,8 @@
     "description": "Docker automatic bitwarden backup.",
     "version": "1.0.0",
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/zicstardust/bitwarden-backup.git"
+        "type": "git",
+        "url": "git+https://github.com/zicstardust/bitwarden-backup.git"
     },
     "keywords": [
         "bitwarden",
@@ -17,10 +17,10 @@
     "author": "zicstardust <contact@zicstardust.com>",
     "license": "UNLICENSED",
     "bugs": {
-      "url": "https://github.com/zicstardust/bitwarden-backup/issues"
+        "url": "https://github.com/zicstardust/bitwarden-backup/issues"
     },
     "homepage": "https://hub.docker.com/r/zicstardust/bitwarden-backup",
     "dependencies": {
-        "@bitwarden/cli": "2025.3.0"
-      }
-  }
+        "@bitwarden/cli": "^2025.4.0"
+    }
+}

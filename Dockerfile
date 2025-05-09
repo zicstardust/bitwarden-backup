@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 
 LABEL NAME="Bitwarden CLI"
-LABEL VERSION="2025.3.0"
+LABEL VERSION="2025.4.0"
 
 ENV NODE_OPTIONS="--no-deprecation"
 ENV BITWARDENCLI_APPDATA_DIR="/app"

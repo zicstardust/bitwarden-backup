@@ -21,6 +21,6 @@
     },
     "homepage": "https://hub.docker.com/r/zicstardust/bitwarden-backup",
     "dependencies": {
-        "@bitwarden/cli": "^2025.4.0"
+        "@bitwarden/cli": "^2025.5.0"
     }
 }

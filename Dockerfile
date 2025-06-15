@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:22.16.0-alpine
 
 LABEL NAME="Bitwarden CLI"
 LABEL VERSION="2025.4.0"

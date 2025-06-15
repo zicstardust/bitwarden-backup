@@ -1,7 +1,7 @@
 {
     "name": "bitwarden-backup",
     "description": "Docker automatic bitwarden backup.",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/zicstardust/bitwarden-backup.git"
@@ -21,6 +21,7 @@
     },
     "homepage": "https://hub.docker.com/r/zicstardust/bitwarden-backup",
     "dependencies": {
-        "@bitwarden/cli": "^2025.5.0"
+        "@bitwarden/cli": "^2025.5.0",
+        "semver": "^7.7.2"
     }
 }

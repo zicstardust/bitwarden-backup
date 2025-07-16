@@ -12,6 +12,9 @@
         "container",
         "docker"
     ],
+    "scripts": {
+        "start": "node app.js"
+    },
     "main": "app.js",
     "type": "module",
     "author": "zicstardust <contact@zicstardust.com>",

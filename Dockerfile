@@ -14,7 +14,7 @@ ENV BACKUP_ORGANIZATION_ONLY=False
 
 WORKDIR /app
 
-COPY app.js package.json ./
+COPY app.js package.json package-lock.json ./
 
 RUN apk add --no-cache --virtual builddeps shadow; \
     groupmod --gid ${GID} node; \
@@ -27,6 +27,6 @@ RUN apk add --no-cache --virtual builddeps shadow; \
 
 USER node
 
-WORKDIR /data
+#WORKDIR /data
 
-CMD [ "node", "/app/app.js" ]
+CMD [ "npm", "start" ]

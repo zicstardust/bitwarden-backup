@@ -75,9 +75,13 @@ function CheckVariables (){
         exit(1)
     }
 
-    if ((!process.env.BACKUP_FORMAT == 'encrypted_json') && (!process.env.BACKUP_FORMAT == 'json') && (!process.env.BACKUP_FORMAT == 'csv')) {
-        console.log(styleText('red', "Invalid BACKUP_FORMAT"))
-        exit(1)
+    if (
+        process.env.BACKUP_FORMAT !== 'encrypted_json' &&
+        process.env.BACKUP_FORMAT !== 'json' &&
+        process.env.BACKUP_FORMAT !== 'csv'
+        ) {
+            console.log(styleText('red', "Invalid BACKUP_FORMAT"))
+            exit(1)
     }
 
     let regex = new RegExp('^[0-9]+$')
@@ -167,7 +171,7 @@ function Backup(){
         let FILENAME = `${date}_bitwarden-backup.${process.env.BACKUP_FORMAT.replace("encrypted_","")}`
         
          if(process.env.BACKUP_FORMAT == "encrypted_json"){
-            var backup = bw(`--raw --session ${BW_SESSION} export --format ${process.env.BACKUP_FORMAT} --password ${process.env.ENCRYPTION_KEY}`) 
+            var backup = bw(`--raw --session ${BW_SESSION} export --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
          } else {
             var backup = bw(`--raw --session ${BW_SESSION} export --format ${process.env.BACKUP_FORMAT}`) 
          }
@@ -188,7 +192,7 @@ function Backup(){
             let FILENAME = `${date}_ORG_${element}.${process.env.BACKUP_FORMAT.replace("encrypted_","")}`
             
             if(process.env.BACKUP_FORMAT == "encrypted_json"){
-                var backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format ${process.env.BACKUP_FORMAT} --password ${process.env.ENCRYPTION_KEY}`) 
+                var backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
             }else {
                 var backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format ${process.env.BACKUP_FORMAT}`) 
             }

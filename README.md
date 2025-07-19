@@ -72,6 +72,7 @@ docker run -d \
 | `ORGANIZATION_IDS` | Backup organization vault<br/><br/>array separated by `,` ||
 | `BACKUP_ORGANIZATION_ONLY` | Skip individual vault backup | False |
 | `KEEP_LAST` | Number of backups to keep<br/><br/>If value is 0, keep all | 0 |
+| `BACKUP_FORMAT` | export backup format<br/><br/>options: `encrypted_json`, `json`, `csv`<br/><br/>IMPORTANT: Only `encrypted_json` is encrypted and requires `ENCRYPTION_KEY` to be set | encrypted_json |
 
 ### For Self-hosted only
 

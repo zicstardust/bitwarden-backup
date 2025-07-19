@@ -67,12 +67,16 @@ function CheckVariables (){
 
     if (!process.env.BW_PASSWORD){
         console.log(styleText('red', "BW_PASSWORD not set"))
-
         exit(1)
     }
 
-    if (!process.env.ENCRYPTION_KEY){
+    if ((!process.env.ENCRYPTION_KEY) && (process.env.BACKUP_FORMAT == "encrypted_json")){
         console.log(styleText('red', "ENCRYPTION_KEY not set"))
+        exit(1)
+    }
+
+    if ((!process.env.BACKUP_FORMAT == 'encrypted_json') && (!process.env.BACKUP_FORMAT == 'json') && (!process.env.BACKUP_FORMAT == 'csv')) {
+        console.log(styleText('red', "Invalid BACKUP_FORMAT"))
         exit(1)
     }
 
@@ -160,8 +164,15 @@ function Backup(){
     if (process.env.BACKUP_ORGANIZATION_ONLY == true) {
         console.log(styleText('white', "BACKUP_ORGANIZATION_ONLY is True, skip individual vault backup..."));
     } else {
-        let FILENAME = `${date}_bitwarden-backup.json`
-        let backup = bw(`--raw --session ${BW_SESSION} export --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
+        let FILENAME = `${date}_bitwarden-backup.${process.env.BACKUP_FORMAT.replace("encrypted_","")}`
+        
+         if(process.env.BACKUP_FORMAT == "encrypted_json"){
+            var backup = bw(`--raw --session ${BW_SESSION} export --format ${process.env.BACKUP_FORMAT} --password ${process.env.ENCRYPTION_KEY}`) 
+         } else {
+            var backup = bw(`--raw --session ${BW_SESSION} export --format ${process.env.BACKUP_FORMAT}`) 
+         }
+        
+        
         fs.writeFile("/data/" + FILENAME, backup, (err) => {
             if (err) throw err;
         })
@@ -174,8 +185,14 @@ function Backup(){
         let ORGANIZATIONS = process.env.ORGANIZATION_IDS.split(',')
 
         ORGANIZATIONS.forEach(element => {
-            let FILENAME = `${date}_ORG_${element}.json`
-            let backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format encrypted_json --password ${process.env.ENCRYPTION_KEY}`) 
+            let FILENAME = `${date}_ORG_${element}.${process.env.BACKUP_FORMAT.replace("encrypted_","")}`
+            
+            if(process.env.BACKUP_FORMAT == "encrypted_json"){
+                var backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format ${process.env.BACKUP_FORMAT} --password ${process.env.ENCRYPTION_KEY}`) 
+            }else {
+                var backup = bw(`--raw --session ${BW_SESSION} export --organizationid ${element} --format ${process.env.BACKUP_FORMAT}`) 
+            }
+            
             fs.writeFile(`/data/${FILENAME}`, backup, (err) => {
                 if (err) throw err;
             })

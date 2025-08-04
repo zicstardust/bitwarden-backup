@@ -4,20 +4,11 @@
 
 [Docker Hub](https://hub.docker.com/r/zicstardust/bitwarden-backup)
 
-## Supported Architectures
-
-| Architecture | Available | Tag |
-| :----: | :----: | ---- |
-| x86-64 | ✅ | latest |
-| arm64 | ✅ | latest |
-
-
 ## Tags
 
-
-| Tag | Available | Description |
+| Tag | Architectures | Description |
 | :----: | :----: |--- |
-| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile) | ✅ | Bitwarden CLI Node version |
+| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile) | x86-64, arm64 | Bitwarden CLI Node version |
 
 ## Usage
 ### docker-compose

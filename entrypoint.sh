@@ -2,12 +2,12 @@
 
 set -e
 
-if [ "$UID" != "$(id -u node)" ]; then
-  usermod -u "$UID" node
+if [ "$PUID" != "$(id -u node)" ]; then
+  usermod -u "$PUID" node
 fi
 
-if [ "$GID" != "$(id -g node)" ]; then
-  groupmod -g "$GID" node
+if [ "$PGID" != "$(id -g node)" ]; then
+  groupmod -g "$PGID" node
 fi
 
 chown -R node:node /data /app

@@ -21,8 +21,8 @@ services:
     tty: true
     environment:
       TZ: America/New_York
-      UID: 1000
-      GID: 1000
+      PUID: 1000
+      PGID: 1000
       INTERVAL: 1d
       BW_CLIENTID: ${BW_CLIENTID}
       BW_CLIENTSECRET: ${BW_CLIENTSECRET}
@@ -36,8 +36,8 @@ services:
 docker run -d \
   --name=bitwarden-backup \
   -e TZ=America/New_York \
-  -e UID=1000 \
-  -e GID=1000 \
+  -e PUID=1000 \
+  -e PGID=1000 \
   -e INTERVAL=1d \
   -e BW_CLIENTID=${BW_CLIENTSECRET} \
   -e BW_CLIENTSECRET=${BW_CLIENTSECRET} \
@@ -53,8 +53,8 @@ docker run -d \
 | variables | Function | Default |
 | :----: | --- | --- |
 | `TZ` | Set Timezone | |
-| `UID` | Set User ID | 1000 |
-| `GID` | Set Group ID | 1000 |
+| `PUID` | Set User ID | 1000 |
+| `PGID` | Set Group ID | 1000 |
 | `INTERVAL` | interval between executions<br/><br/>examples:<br/><br/>`1d - 1 day`<br/><br/>`10m - 10 minutes`<br/><br/>`1w - 1 week`<br/><br/>`65s - 65 seconds` | 1d |
 | `BW_CLIENTID` | Set User Client ID ||
 | `BW_CLIENTSECRET` | Set User Client Secret ||

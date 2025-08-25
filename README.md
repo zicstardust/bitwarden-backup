@@ -1,4 +1,4 @@
-# Automatic Docker Bitwarden Backup
+# Bitwarden automatic backup container
 
 [GitHub](https://github.com/zicstardust/bitwarden-backup)
 

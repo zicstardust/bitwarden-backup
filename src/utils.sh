@@ -5,6 +5,8 @@
 RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m' 
+BACKGROUND_BLUE='\x1b[44m'
+NOCOLOR='\x1b[0m'
 
 
 DateTimeNow() {
@@ -27,7 +29,7 @@ RemoveOldBackups(){
     local name_filter=$1
 
     if [ "${KEEP_LAST}" ==  "0" ]; then
-        echo -e "${YELLOW}KEEP_LAST=0, keeping all backups"
+        echo -e "${YELLOW}KEEP_LAST=0, keeping all backups${NOCOLOR}"
         return
     fi
 
@@ -39,7 +41,7 @@ RemoveOldBackups(){
         local i=0
         for file in "${files_list[@]}"; do
             rm -f $file
-            echo -e "${RED}deleted: $file"
+            echo -e "${RED}deleted: $file${NOCOLOR}"
             i=$(($i+1))
             if [ $i -eq $delete_files_length ]; then
                 break
@@ -47,6 +49,6 @@ RemoveOldBackups(){
         done
 
     else
-        echo -e "${YELLOW}No delete old backup, number of backups less than KEEP_LAST"
+        echo -e "${YELLOW}No delete old backup, number of backups less than KEEP_LAST${NOCOLOR}"
     fi
 }

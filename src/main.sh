@@ -30,6 +30,7 @@ Backup() {
 
 
 #Main
+echo -e "${BACKGROUND_BLUE}Bitwarden CLI $(bw --version)${NOCOLOR}"
 Config
 
 while true; do

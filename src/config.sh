@@ -1,37 +1,37 @@
 #!/usr/bin/env bash
 CheckVariables() {
     if ! [ "${BW_CLIENTID}" ]; then
-        echo -e "${RED}BW_CLIENTID not set."
+        echo -e "${RED}BW_CLIENTID not set.${NOCOLOR}"
         exit 1
     fi
 
 
     if ! [ "${BW_CLIENTSECRET}" ]; then
-        echo -e "${RED}BW_CLIENTSECRET not set."
+        echo -e "${RED}BW_CLIENTSECRET not set.${NOCOLOR}"
         exit 1
     fi
 
 
     if ! [ "${BW_PASSWORD}" ]; then
-        echo -e "${RED}BW_PASSWORD not set."
+        echo -e "${RED}BW_PASSWORD not set.${NOCOLOR}"
         exit 1
     fi
 
     if ! [ "${ENCRYPTION_KEY}" ] && [ "${BACKUP_FORMAT}" ==  "encrypted_json" ]; then
-        echo -e "${RED}ENCRYPTION_KEY not set."
+        echo -e "${RED}ENCRYPTION_KEY not set.${NOCOLOR}"
         exit 1
     fi
 
 
     if [ "${BACKUP_FORMAT}" !=  "encrypted_json" ] && [ "${BACKUP_FORMAT}" !=  "json" ] && [ "${BACKUP_FORMAT}" !=  "csv" ]; then
-        echo -e "${RED}Invalid BACKUP_FORMAT."
+        echo -e "${RED}Invalid BACKUP_FORMAT.${NOCOLOR}"
         exit 1
     fi
 
 
     re='^[0-9]+$'
     if ! [[ $KEEP_LAST =~ $re ]] ; then
-        echo -e "${RED}Invalid KEEP_LAST"
+        echo -e "${RED}Invalid KEEP_LAST${NOCOLOR}"
         exit 1
     fi
 }

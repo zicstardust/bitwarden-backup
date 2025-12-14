@@ -2,7 +2,7 @@
 BackupPersonalVault() {
 
     if [ "${BACKUP_ORGANIZATION_ONLY}" == "1" ]; then
-        echo -e "${YELLOW}BACKUP_ORGANIZATION_ONLY set, skip individual vault backup..."
+        echo -e "${YELLOW}BACKUP_ORGANIZATION_ONLY set, skip individual vault backup...${NOCOLOR}"
         return
     fi
     local now
@@ -18,7 +18,7 @@ BackupPersonalVault() {
     fi
 
     echo "$backup_content" > /data/${FILENAME}
-    echo -e "${GREEN}Backup individual vault done: ${FILENAME}"
+    echo -e "${GREEN}Backup individual vault done: ${FILENAME}${NOCOLOR}"
     RemoveOldBackups "bitwarden-backup"
 }
 
@@ -45,7 +45,7 @@ BackupOrganizationVault() {
         fi
 
         echo "$backup_content" > /data/${FILENAME}
-        echo -e "${GREEN}Backup organization vault done: ${FILENAME}"
+        echo -e "${GREEN}Backup organization vault done: ${FILENAME}${NOCOLOR}"
         RemoveOldBackups "ORG_${org}"
 
     done

@@ -4,21 +4,15 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - '.tool-versions'
+      - 'src/**'
       - 'Dockerfile'
-      - 'app.js'
-      - 'package.json'
-      - 'package-lock.json'
       - '.github/workflows/docker-image-latest.yml'
       - 'entrypoint.sh'
   pull_request:
     branches: [ "main" ]
     paths:
-      - '.tool-versions'
+      - 'src/**'
       - 'Dockerfile'
-      - 'app.js'
-      - 'package.json'
-      - 'package-lock.json'
       - '.github/workflows/docker-image-latest.yml'
       - 'entrypoint.sh'
 

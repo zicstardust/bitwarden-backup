@@ -15,10 +15,8 @@
 ```
 services:
   bitwarden-backup:
-    restart: unless-stopped 
     container_name: bitwarden-backup
     image: zicstardust/bitwarden-backup:latest
-    tty: true
     environment:
       TZ: America/New_York
       PUID: 1000
@@ -31,22 +29,7 @@ services:
     volumes:
       - /path/to/data/:/data/
 ```
-### docker cli
-```
-docker run -d \
-  --name=bitwarden-backup \
-  -e TZ=America/New_York \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e INTERVAL=1d \
-  -e BW_CLIENTID=${BW_CLIENTSECRET} \
-  -e BW_CLIENTSECRET=${BW_CLIENTSECRET} \
-  -e BW_PASSWORD=${BW_PASSWORD} \
-  -e ENCRYPTION_KEY=${ENCRYPTION_KEY} \
-  -v /path/to/data/:/data/ \
-  --restart unless-stopped \
-  zicstardust/bitwarden-backup:latest
-```
+
 
 ## Environment variables
 
@@ -61,9 +44,9 @@ docker run -d \
 | `BW_PASSWORD` | Set User Master Password ||
 | `ENCRYPTION_KEY` | Set password for file encryption ||
 | `ORGANIZATION_IDS` | Backup organization vault<br/><br/>array separated by `,` ||
-| `BACKUP_ORGANIZATION_ONLY` | Skip individual vault backup | False |
+| `BACKUP_ORGANIZATION_ONLY` | Set `1` to skip individual vault backup | |
 | `KEEP_LAST` | Number of backups to keep<br/><br/>If value is 0, keep all | 0 |
-| `BACKUP_FORMAT` | export backup format<br/><br/>options: `encrypted_json`, `json`, `csv`<br/><br/>IMPORTANT: Only `encrypted_json` is encrypted and requires `ENCRYPTION_KEY` to be set | encrypted_json |
+| `BACKUP_FORMAT` | export backup format<br/><br/>options: `encrypted_json`, `json`, `csv`<br/><br/>IMPORTANT: Only `encrypted_json` is encrypted and requires `ENCRYPTION_KEY` | encrypted_json |
 
 ### For Self-hosted only
 

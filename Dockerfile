@@ -1,27 +1,28 @@
 FROM node:lts-alpine
 
+LABEL VERSION="2025.12.0"
+
 ENV NODE_OPTIONS="--no-deprecation"
 ENV BITWARDENCLI_APPDATA_DIR="/app"
 
-ENV PUID=1000
-ENV PGID=1000
-ENV INTERVAL='1d'
-ENV KEEP_LAST=0
-ENV BACKUP_ORGANIZATION_ONLY=False
-ENV BACKUP_FORMAT='encrypted_json'
 
 WORKDIR /app
 
-COPY app.js package.json package-lock.json ./
+COPY src/* .
 COPY entrypoint.sh /entrypoint.sh
 
 RUN apk add --no-cache \
       shadow \
+      bash \
+      tzdata \
       su-exec; \
     mkdir -p /data; \
     touch "/app/data.json"; \
-    npm install; \
-    chmod +x /entrypoint.sh
+    npm install -g @bitwarden/cli; \
+    chmod +x /entrypoint.sh /app/main.sh
+
+VOLUME [ "/data" ]
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["npm", "start"]
+
+CMD ["/app/main.sh"]

@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
+
+: "${PUID:=1000}"
+: "${PGID:=1000}"
 
 if [ "$PUID" != "$(id -u node)" ]; then
   usermod -u "$PUID" node

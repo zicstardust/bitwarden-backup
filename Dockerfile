@@ -1,4 +1,6 @@
-FROM node:lts-alpine
+#FROM node:lts-alpine
+FROM node:24.12-alpine
+
 
 LABEL VERSION="2025.12.0"
 

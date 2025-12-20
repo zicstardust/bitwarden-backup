@@ -5,14 +5,14 @@ on:
     branches: [ "main" ]
     paths:
       - 'src/**'
-      - 'Dockerfile'
+      - 'dockerfile'
       - '.github/workflows/push-image-docker-io.yml'
       - 'entrypoint.sh'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'src/**'
-      - 'Dockerfile'
+      - 'dockerfile'
       - '.github/workflows/push-image-docker-io.yml'
       - 'entrypoint.sh'
 
@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: Dockerfile
+          file: dockerfile
           platforms: ${{ env.PLATAFORM_ARCH }}
           push: true
           tags: ${{ env.CONTAINER_REPO }}:latest

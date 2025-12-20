@@ -5,14 +5,14 @@ on:
     branches: [ "main" ]
     paths:
       - 'src/**'
-      - 'Dockerfile'
+      - 'dockerfile'
       - '.github/workflows/push-image-gh-io.yml'
       - 'entrypoint.sh'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'src/**'
-      - 'Dockerfile'
+      - 'dockerfile'
       - '.github/workflows/push-image-gh-io.yml'
       - 'entrypoint.sh'
 

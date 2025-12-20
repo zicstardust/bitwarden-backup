@@ -17,12 +17,12 @@
 
 
 ## Usage
-### docker-compose
+### Compose
 ```
 services:
   bitwarden-backup:
     container_name: bitwarden-backup
-    image: zicstardust/bitwarden-backup:latest
+    image: docker.io/zicstardust/bitwarden-backup:latest
     environment:
       TZ: America/New_York
       PUID: 1000
@@ -33,7 +33,7 @@ services:
       BW_PASSWORD: ${BW_PASSWORD}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
     volumes:
-      - /path/to/data/:/data/
+      - <path to data>:/data/
 ```
 
 

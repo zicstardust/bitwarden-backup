@@ -7,7 +7,7 @@
 
 | Tag | Architecture | Description |
 | :----: | :----: | :----: |
-| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/dockerfile) | amd64 | Dedicated Server |
+| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/dockerfile) | amd64 | Bitwarden CLI Node version |
 
 ### Registries
 | Registry | Full image name | Description |

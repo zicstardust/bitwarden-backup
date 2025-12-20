@@ -2,13 +2,19 @@
 
 [GitHub](https://github.com/zicstardust/bitwarden-backup)
 
-[Docker Hub](https://hub.docker.com/r/zicstardust/bitwarden-backup)
+## Container
+### Tags
 
-## Tags
+| Tag | Architecture | Description |
+| :----: | :----: | :----: |
+| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/dockerfile) | amd64 | Dedicated Server |
 
-| Tag | Architectures | Description |
-| :----: | :----: |--- |
-| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile) | x86-64, arm64 | Bitwarden CLI Node version |
+### Registries
+| Registry | Full image name | Description |
+| :----: | :----: | :----: |
+| [`docker.io`](https://hub.docker.com/r/zicstardust/bitwarden-backup) | `docker.io/zicstardust/bitwarden-backup` | Docker Hub |
+| [`ghcr.io`](https://github.com/zicstardust/bitwarden-backup/pkgs/container/bitwarden-backup) | `ghcr.io/zicstardust/bitwarden-backup` | GitHub |
+
 
 ## Usage
 ### docker-compose

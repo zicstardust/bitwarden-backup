@@ -18,7 +18,7 @@
 
 ## Usage
 ### Compose
-```
+```yml
 services:
   bitwarden-backup:
     container_name: bitwarden-backup
@@ -39,20 +39,20 @@ services:
 
 ## Environment variables
 
-| variables | Function | Default |
-| :----: | --- | --- |
-| `TZ` | Set Timezone | |
-| `PUID` | Set User ID | 1000 |
-| `PGID` | Set Group ID | 1000 |
-| `INTERVAL` | interval between executions<br/><br/>examples:<br/><br/>`1d - 1 day`<br/><br/>`10m - 10 minutes`<br/><br/>`1w - 1 week`<br/><br/>`65s - 65 seconds` | 1d |
-| `BW_CLIENTID` | Set User Client ID ||
-| `BW_CLIENTSECRET` | Set User Client Secret ||
-| `BW_PASSWORD` | Set User Master Password ||
-| `ENCRYPTION_KEY` | Set password for file encryption ||
-| `ORGANIZATION_IDS` | Backup organization vault<br/><br/>array separated by `,` ||
-| `BACKUP_ORGANIZATION_ONLY` | Set `1` to skip individual vault backup | |
-| `KEEP_LAST` | Number of backups to keep<br/><br/>If value is 0, keep all | 0 |
-| `BACKUP_FORMAT` | export backup format<br/><br/>options: `encrypted_json`, `json`, `csv`<br/><br/>IMPORTANT: Only `encrypted_json` is encrypted and requires `ENCRYPTION_KEY` | encrypted_json |
+| variables | Function | Default | Exemple/Info |
+| :----: | --- | --- | --- |
+| `TZ` | Set Timezone | | |
+| `PUID` | Set User ID | 1000 | |
+| `PGID` | Set Group ID | 1000 | |
+| `INTERVAL` | interval between executions< | 1d | `1d - 1 day`<br/>`10m - 10 minutes`<br/>`1w - 1 week`<br/>`65s - 65 seconds` |
+| `BW_CLIENTID` | Set User Client ID | | |
+| `BW_CLIENTSECRET` | Set User Client Secret | | |
+| `BW_PASSWORD` | Set User Master Password | | |
+| `ENCRYPTION_KEY` | Set password for file encryption | | |
+| `ORGANIZATION_IDS` | Backup organization vault<br/>array separated by `,` | | |
+| `BACKUP_ORGANIZATION_ONLY` | Set `true` to skip individual vault backup | | |
+| `KEEP_LAST` | Number of backups to keep<br/>If value is `0`, keep all | 0 | |
+| `BACKUP_FORMAT` | Backup format | encrypted_json | options: `encrypted_json`, `json`, `csv`<br/>IMPORTANT: Only `encrypted_json` is encrypted and requires `ENCRYPTION_KEY` |
 
 ### For Self-hosted only
 

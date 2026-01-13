@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 BackupPersonalVault() {
 
-    if [ "${BACKUP_ORGANIZATION_ONLY}" == "1" ]; then
+    if [[ "$BACKUP_ORGANIZATION_ONLY" =~ ^(1|true|True|y|Y)$ ]]; then
         echo -e "${YELLOW}BACKUP_ORGANIZATION_ONLY set, skip individual vault backup...${NOCOLOR}"
         return
     fi

@@ -1,4 +1,4 @@
-FROM node:24.13.1-alpine
+FROM node:25.6.1-alpine
 
 
 LABEL VERSION="2026.1.0"

@@ -15,10 +15,6 @@ Config() {
     CheckVariables
     SetURLServer
     Login
-    unset BW_CLIENTID
-    unset BW_CLIENTSECRET
-    MASTER_PASSWORD=$BW_PASSWORD
-    unset BW_PASSWORD
 }
 
 

@@ -83,7 +83,7 @@ Login() {
 
 Unlock() {
     echo -e "Unlocking vault...\n"
-    BW_SESSION=$(bw unlock "$BW_PASSWORD" --raw)
+    BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw)
 }
 
 Lock() {

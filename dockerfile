@@ -1,7 +1,6 @@
 FROM node:24.14.0-alpine
 
-
-LABEL VERSION="2026.2.0"
+ARG BW_CLI_VERSION="2026.2.0"
 
 ENV NODE_OPTIONS="--no-deprecation"
 ENV BITWARDENCLI_APPDATA_DIR="/app"
@@ -17,9 +16,11 @@ RUN apk add --no-cache \
       bash \
       tzdata \
       su-exec; \
+    \
     mkdir -p /data; \
     touch "/app/data.json"; \
-    npm install -g @bitwarden/cli; \
+    npm install -g @bitwarden/cli@${BW_CLI_VERSION}; \
+    \
     chmod +x /entrypoint.sh /app/main.sh
 
 VOLUME [ "/data" ]

@@ -52,7 +52,7 @@ services:
 | `ORGANIZATION_IDS` | Backup organization vault<br/>array separated by `,` | | |
 | `BACKUP_ORGANIZATION_ONLY` | Set `true` to skip individual vault backup | | |
 | `KEEP_LAST` | Number of backups to keep<br/>If value is `0`, keep all | 0 | |
-| `BACKUP_FORMAT` | Backup format | encrypted_json | options: `encrypted_json`, `json`, `csv`<br/>IMPORTANT: Only `encrypted_json` is encrypted and requires `ENCRYPTION_KEY` |
+| `BACKUP_FORMAT` | Backup format | encrypted_json | Value: `encrypted_json`, `json`, `csv`, `zip`,<br/>NOTE: Only `encrypted_json` is encrypted and requires `ENCRYPTION_KEY`<br/>NOTE: `zip` includes your attachments<br/>NOTE: `zip` not supported for organization |
 
 ### For Self-hosted only
 

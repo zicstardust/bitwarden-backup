@@ -23,7 +23,7 @@ CheckVariables() {
     fi
 
 
-    if [ "${BACKUP_FORMAT}" !=  "encrypted_json" ] && [ "${BACKUP_FORMAT}" !=  "json" ] && [ "${BACKUP_FORMAT}" !=  "csv" ]; then
+    if [ "${BACKUP_FORMAT}" !=  "encrypted_json" ] && [ "${BACKUP_FORMAT}" !=  "json" ] && [ "${BACKUP_FORMAT}" !=  "csv" ] && [ "${BACKUP_FORMAT}" !=  "zip" ]; then
         echo -e "${RED}Invalid BACKUP_FORMAT.${NOCOLOR}"
         exit 1
     fi

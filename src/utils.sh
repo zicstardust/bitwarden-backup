@@ -20,6 +20,8 @@ BackupExtension(){
         echo "json"
     elif [ "${BACKUP_FORMAT}" ==  "csv" ]; then
         echo "csv"
+    elif [ "${BACKUP_FORMAT}" ==  "zip" ]; then
+        echo "zip"
     fi
 
 }

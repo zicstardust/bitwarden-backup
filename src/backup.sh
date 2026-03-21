@@ -12,12 +12,11 @@ BackupPersonalVault() {
 
 
     if [ "${BACKUP_FORMAT}" == "encrypted_json" ]; then
-        backup_content=$(bw --raw --session ${BW_SESSION} export --format encrypted_json --password ${ENCRYPTION_KEY})
+        bw --session ${BW_SESSION} export --format encrypted_json --password ${ENCRYPTION_KEY} --output /data/${FILENAME} 1>/dev/null
     else
-        backup_content=$(bw --raw --session ${BW_SESSION} export --format ${BACKUP_FORMAT})
+        bw --session ${BW_SESSION} export --format ${BACKUP_FORMAT} --output /data/${FILENAME} 1>/dev/null
     fi
 
-    echo "$backup_content" > /data/${FILENAME}
     echo -e "${GREEN}Backup individual vault done: ${FILENAME}${NOCOLOR}"
     RemoveOldBackups "bitwarden-backup"
 }
@@ -39,12 +38,11 @@ BackupOrganizationVault() {
 
 
         if [ "${BACKUP_FORMAT}" == "encrypted_json" ]; then
-            backup_content=$(bw --raw --session ${BW_SESSION} export --organizationid ${org} --format encrypted_json --password ${ENCRYPTION_KEY})
+            bw --session ${BW_SESSION} export --organizationid ${org} --format encrypted_json --password ${ENCRYPTION_KEY} --output /data/${FILENAME} 1>/dev/null
         else
-            backup_content=$(bw --raw --session ${BW_SESSION} export --organizationid ${org} --format ${BACKUP_FORMAT})
+            bw --session ${BW_SESSION} export --organizationid ${org} --format ${BACKUP_FORMAT} --output /data/${FILENAME} 1>/dev/null
         fi
 
-        echo "$backup_content" > /data/${FILENAME}
         echo -e "${GREEN}Backup organization vault done: ${FILENAME}${NOCOLOR}"
         RemoveOldBackups "ORG_${org}"
 

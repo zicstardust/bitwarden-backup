@@ -1,4 +1,4 @@
-FROM node:26.2.0-alpine
+FROM node:26.3.0-alpine
 
 ARG BW_CLI_VERSION="2026.4.2"
 

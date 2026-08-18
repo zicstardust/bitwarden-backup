@@ -1,0 +1,55 @@
+name: Check and update Bitwarden CLI version
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-bitwarden-cli:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Get latest @bitwarden/cli version
+        id: latest
+        run: |
+          LATEST_VERSION=$(npm view @bitwarden/cli version --silent)
+          echo "version=${LATEST_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Get pinned version in Dockerfile
+        id: current
+        run: |
+          CURRENT_VERSION=$(grep -Eo 'ARG BW_CLI_VERSION="[^"]+"' dockerfile | head -n 1 | cut -d'"' -f2)
+          echo "version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Update Dockerfile when a new version is available
+        if: steps.latest.outputs.version != steps.current.outputs.version
+        run: |
+          sed -i "s#ARG BW_CLI_VERSION=\".*\"#ARG BW_CLI_VERSION=\"${{ steps.latest.outputs.version }}\"#" dockerfile
+
+      - name: Create pull request
+        if: steps.latest.outputs.version != steps.current.outputs.version
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: bump @bitwarden/cli to v${{ steps.latest.outputs.version }}"
+          title: "chore: bump @bitwarden/cli to v${{ steps.latest.outputs.version }}"
+          body: |
+            Automated weekly check detected a new release for `@bitwarden/cli`.
+
+            - Current version: `${{ steps.current.outputs.version }}`
+            - Latest version: `${{ steps.latest.outputs.version }}`
+          branch: chore/bump-bitwarden-cli
+          delete-branch: true
+          labels: dependencies

@@ -6,7 +6,6 @@ on:
     paths:
       - 'src/**'
       - 'Dockerfile'
-      - '.github/workflows/push-image-gh-io.yml'
       - 'entrypoint.sh'
 
 env:

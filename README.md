@@ -5,15 +5,22 @@
 ## Container
 ### Tags
 
-| Tag | Architecture | Description |
-| :----: | :----: | :----: |
-| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/dockerfile) | amd64, arm64 | Bitwarden CLI Node version |
+| Tag | Description |
+| :----: | :----: |
+| [`latest`](https://github.com/zicstardust/bitwarden-backup/blob/main/Dockerfile) | Bitwarden CLI Node version |
 
 ### Registries
 | Registry | Full image name | Description |
 | :----: | :----: | :----: |
 | [`docker.io`](https://hub.docker.com/r/zicstardust/bitwarden-backup) | `docker.io/zicstardust/bitwarden-backup` | Docker Hub |
 | [`ghcr.io`](https://github.com/zicstardust/bitwarden-backup/pkgs/container/bitwarden-backup) | `ghcr.io/zicstardust/bitwarden-backup` | GitHub |
+
+### Supported Architectures
+
+| Architecture | Available | Plataform |
+| :----: | :----: | ---- |
+| amd64 | ✅ | linux/amd64 |
+| arm64 | ✅ | linux/arm64/v8 |
 
 
 ## Usage

@@ -8,7 +8,7 @@ ENV BITWARDENCLI_APPDATA_DIR="/app"
 
 WORKDIR /app
 
-COPY src/* .
+COPY src/* /usr/local/bin/
 COPY entrypoint.sh /entrypoint.sh
 
 RUN apk add --no-cache \
@@ -21,10 +21,10 @@ RUN apk add --no-cache \
     touch "/app/data.json"; \
     npm install -g @bitwarden/cli@${BW_CLI_VERSION}; \
     \
-    chmod +x /entrypoint.sh /app/main.sh
+    chmod -R +x /entrypoint.sh /usr/local/bin/*
 
 VOLUME [ "/data" ]
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/app/main.sh"]
+CMD ["/usr/local/bin/main.sh"]

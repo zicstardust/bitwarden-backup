@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source /app/backup.sh
-source /app/config.sh
-source /app/utils.sh
+source /usr/local/bin/backup.sh
+source /usr/local/bin/config.sh
+source /usr/local/bin/utils.sh
 
 set -e
 

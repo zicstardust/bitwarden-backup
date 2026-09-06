@@ -10,6 +10,7 @@ set -e
 : "${KEEP_LAST:=0}"
 : "${BACKUP_FORMAT:=encrypted_json}"
 
+export INTERVAL KEEP_LAST BACKUP_FORMAT
 
 Config() {
     CheckVariables
@@ -28,6 +29,8 @@ Backup() {
 
 
 #Main
+rm -f /config/data.json
+touch /config/data.json
 echo -e "${BACKGROUND_BLUE}Bitwarden CLI $(bw --version)${NOCOLOR}"
 Config
 

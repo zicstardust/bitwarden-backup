@@ -13,6 +13,8 @@ if [ "$PGID" != "$(id -g node)" ]; then
   groupmod -g "$PGID" node
 fi
 
-chown -R node:node /data /app
+mkdir -p /data /config
+
+chown -R node:node /data /config
 
 exec su-exec node "$@"

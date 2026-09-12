@@ -11,8 +11,8 @@ WORKDIR /data
 COPY src/* /usr/local/bin/
 COPY entrypoint.sh /entrypoint.sh
 
-RUN apk update \
-      apk upgrade -a \
+RUN apk update; \
+      apk upgrade -a; \
       apk add --no-cache \
       shadow \
       bash \

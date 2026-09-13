@@ -2,8 +2,7 @@ FROM alpine:3.24.1
 
 ARG TARGETARCH
 
-#Node.js 24 is not yet supported by Bitwarden CLI, so we use Node.js 22 instead.
-ARG NODE_VERSION="22.23.2"
+ARG NODE_VERSION="24.21.0"
 ARG BW_CLI_VERSION="2026.8.0"
 ARG DOWNLOAD_BASE_URL="https://unofficial-builds.nodejs.org/download/release"
 

@@ -19,20 +19,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: "22"
+          node-version: "24"
 
       - name: Get latest version
         id: latest
         run: |
-            LATEST_MAJOR_VERSION=$(npm view @bitwarden/cli engines.node --json | jq -r 'capture("(?<major>[0-9]+)") | .major')
+            #LATEST_MAJOR_VERSION=$(npm view @bitwarden/cli engines.node --json | jq -r 'capture("(?<major>[0-9]+)") | .major')
 
-            LATEST_TAG=$(curl -s https://api.github.com/repos/nodejs/node/releases | jq -r '[.[] | select(.tag_name | test("^v'${LATEST_MAJOR_VERSION}'\\."))][0].tag_name')
+            LATEST_TAG=$(curl -sL https://nodejs.org/dist/index.json | jq -r '[.[] | select(.lts != false)][0].version')
             LATEST_VERSION=${LATEST_TAG#v}
+
+            LATEST_MAJOR_VERSION="${LATEST_VERSION%%.*}"
 
             LATEST_BW_VERSION=$(npm view @bitwarden/cli version --silent)
 
             if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" == "null" ]; then
-                echo "Error searching latest Node.js version for major version ${LATEST_MAJOR_VERSION}"
+                echo "Error searching latest Node.js LTS version for major version ${LATEST_MAJOR_VERSION}"
                 exit 1
             fi
 

@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  update-node:
+  update-node-and-bw-cli:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

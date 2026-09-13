@@ -5,16 +5,16 @@ set -e
 : "${PUID:=1000}"
 : "${PGID:=1000}"
 
-if [ "$PUID" != "$(id -u node)" ]; then
-  usermod -u "$PUID" node
+if [ "$PUID" != "$(id -u bwbackup)" ]; then
+  usermod -u "$PUID" bwbackup
 fi
 
-if [ "$PGID" != "$(id -g node)" ]; then
-  groupmod -g "$PGID" node
+if [ "$PGID" != "$(id -g bwbackup)" ]; then
+  groupmod -g "$PGID" bwbackup
 fi
 
 mkdir -p /data /config
 
-chown -R node:node /data /config
+chown -R bwbackup:bwbackup /data /config /home/bwbackup
 
-exec su-exec node "$@"
+exec su-exec bwbackup "$@"

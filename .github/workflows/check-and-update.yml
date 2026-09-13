@@ -1,0 +1,86 @@
+name: Update Node and Bitwarden CLI
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Get latest version
+        id: latest
+        run: |
+            LATEST_MAJOR_VERSION=$(npm view @bitwarden/cli engines.node --json | jq -r 'capture("(?<major>[0-9]+)") | .major')
+
+            LATEST_TAG=$(curl -s https://api.github.com/repos/nodejs/node/releases | jq -r '[.[] | select(.tag_name | test("^v'${LATEST_MAJOR_VERSION}'\\."))][0].tag_name')
+            LATEST_VERSION=${LATEST_TAG#v}
+
+            LATEST_BW_VERSION=$(npm view @bitwarden/cli version --silent)
+
+            if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" == "null" ]; then
+                echo "Error searching latest Node.js version for major version ${LATEST_MAJOR_VERSION}"
+                exit 1
+            fi
+
+            echo "version=${LATEST_VERSION}" >> "$GITHUB_OUTPUT"
+            echo "major_version=${LATEST_MAJOR_VERSION}" >> "$GITHUB_OUTPUT"
+            echo "bw_version=${LATEST_BW_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Get pinned versions
+        id: current
+        run: |
+          CURRENT_VERSION=$(grep -Eo 'ARG NODE_VERSION="[^"]+"' Dockerfile | head -n 1 | cut -d'"' -f2)
+
+          CURRENT_MAJOR_VERSION=$(grep -Eo 'node-version: "[^"]+"' .github/workflows/check-and-update.yml | head -n 1 | cut -d'"' -f2)
+
+          CURRENT_BW_VERSION=$(grep -Eo 'ARG BW_CLI_VERSION="[^"]+"' Dockerfile | head -n 1 | cut -d'"' -f2)
+          
+          echo "version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "major_version=${CURRENT_MAJOR_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "bw_version=${CURRENT_BW_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Update Dockerfile when a new Node.js version is available
+        if: steps.latest.outputs.version != steps.current.outputs.version
+        run: |
+          sed -i "s#ARG NODE_VERSION=\".*\"#ARG NODE_VERSION=\"${{ steps.latest.outputs.version }}\"#" Dockerfile
+
+      - name: Update Dockerfile when a new Bitwarden CLI version is available
+        if: steps.latest.outputs.bw_version != steps.current.outputs.bw_version
+        run: |
+          sed -i "s#ARG BW_CLI_VERSION=\".*\"#ARG BW_CLI_VERSION=\"${{ steps.latest.outputs.bw_version }}\"#" Dockerfile
+
+
+      - name: Update workflow when a new Node.js major version is available
+        if: steps.latest.outputs.major_version != steps.current.outputs.major_version
+        run: |
+          sed -i "s#node-version: \"[^\"]+\"#node-version: \"${{ steps.latest.outputs.major_version }}\"#" .github/workflows/check-and-update.yml
+
+      - name: Create Pull Request
+        if: steps.latest.outputs.bw_version != steps.current.outputs.bw_version
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump Bitwarden CLI to v${{ steps.latest.outputs.bw_version }}"
+          title: "chore(deps): bump Bitwarden CLI ${{ steps.latest.outputs.bw_version }} version"
+          body: |
+            Automated weekly check detected a new release for `Bitwarden CLI`.
+
+            - Current version: `${{ steps.current.outputs.bw_version }}`
+            - Latest version: `${{ steps.latest.outputs.bw_version }}`
+          branch: chore/bump-bw-cli
+          delete-branch: true
+          labels: dependencies

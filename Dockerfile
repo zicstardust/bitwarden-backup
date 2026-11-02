@@ -2,8 +2,8 @@ FROM alpine:3.24.3
 
 ARG TARGETARCH
 
-ARG NODE_VERSION="24.22.0"
-ARG BW_CLI_VERSION="2026.10.0"
+ARG NODE_VERSION="26.13.0"
+ARG BW_CLI_VERSION="2026.10.1"
 ARG DOWNLOAD_BASE_URL="https://unofficial-builds.nodejs.org/download/release"
 
 

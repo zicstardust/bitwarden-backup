@@ -1,4 +1,4 @@
-name: Update Node
+name: Update NodeJS
 
 on:
   schedule:
@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  update-node-and-bw-cli:
+  update-nodejs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

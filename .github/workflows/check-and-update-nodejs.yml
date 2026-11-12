@@ -1,0 +1,61 @@
+name: Update Node
+
+on:
+  schedule:
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-node-and-bw-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Get latest version
+        id: latest
+        run: |
+            LATEST_TAG=$(curl -sL https://nodejs.org/dist/index.json | jq -r '[.[] | select(.lts != false)][0].version')
+            LATEST_VERSION=${LATEST_TAG#v}
+
+            if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" == "null" ]; then
+                echo "Error searching latest NodeJS LTS version"
+                exit 1
+            fi
+
+            echo "Latest Version: ${LATEST_VERSION}"
+
+            echo "version=${LATEST_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Get current version
+        id: current
+        run: |
+          CURRENT_VERSION=$(grep -Eo 'ARG NODE_VERSION="[^"]+"' Dockerfile | head -n 1 | cut -d'"' -f2)
+          echo "Current Version: ${CURRENT_VERSION}"
+
+          echo "version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Update Dockerfile when a new NodeJS LTS version is available
+        if: steps.latest.outputs.version != steps.current.outputs.version
+        run: |
+          sed -i "s#ARG NODE_VERSION=\".*\"#ARG NODE_VERSION=\"${{ steps.latest.outputs.version }}\"#" Dockerfile
+
+      - name: Create Pull Request
+        if: steps.latest.outputs.version != steps.current.outputs.version
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump NodeJS to v${{ steps.latest.outputs.version }}"
+          title: "chore(deps): bump NodeJS ${{ steps.latest.outputs.version }} version"
+          body: |
+            Automated weekly check detected a new release for `NodeJS LTS`.
+
+            - Current version: `${{ steps.current.outputs.version }}`
+            - New version: `${{ steps.latest.outputs.version }}`
+          branch: chore/bump-node
+          delete-branch: true
+          labels: dependencies
